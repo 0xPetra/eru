@@ -31,7 +31,9 @@ export const Engine: React.FC<{
             {/* <ComponentRenderer /> */}
 
             <BrowserView>
+              <ChakraProvider>
               <DesktopWindow layers={layers} />
+              </ChakraProvider>
             </BrowserView>
             
             <MobileView>

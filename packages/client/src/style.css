@@ -10,3 +10,63 @@
 body {
     color: white
 }
+
+
+.plyr {
+    border-radius: 24cm;
+  }
+  
+  .plyr__control--overlaid {
+    background-color: #844195!important
+  }
+  
+  .plyr--full-ui input[type='range'] {
+    color: #100687!important
+  }
+  
+  .plyr__control:hover {
+    background-color: #844195!important
+  }
+  
+  
+  /** CSS overrides for plyr audio **/
+  .plyr--audio .plyr__controls {
+    color: #fff!important;
+    background-color: transparent!important;
+  }
+  
+  .plyr--audio .plyr__control {
+    background-color: transparent!important
+  }
+  
+  .plyr--audio.plyr--full-ui input[type='range'] {
+    color: #fff!important;
+  }
+  
+  .toolbar-icons button {
+    color: #100687!important;
+    border-radius: 24px;
+    /* hover: {
+      background-color: #100687!important;
+    } */
+  }
+  
+  /* .toolbar-icon {
+    @apply flex bg-contain bg-center bg-no-repeat w-[20px] h-[20px];
+  }
+  
+  i.bold {
+    background-image: url(/assets/type-bold.svg);
+  }
+  
+  i.italic {
+    background-image: url(/assets/type-italic.svg);
+  }
+  
+  i.code {
+    background-image: url(/assets/type-code.svg);
+  }
+  
+  div[data-lexical-editor='true'] {
+    @apply outline-none;
+  } */

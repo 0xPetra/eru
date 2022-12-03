@@ -1,62 +1,73 @@
-import React, {useCallback, useState} from 'react'
+import React, {useState} from 'react'
 import { observer } from "mobx-react-lite";
-import {useDropzone} from 'react-dropzone'
-import {utils} from "ethers";
-import crypto from "crypto";
-import { Box } from '@chakra-ui/react'
+import { Box, IconButton, Text, useToast, Flex } from '@chakra-ui/react'
+import { FiTrash } from "react-icons/fi";
 
-import {uploadFiles} from '../../../../lib/uploadFiles';
+
+import getSrc from '../../../../utils/getSrc'
+
+
+
+import Audio from '../../components/Audio'
+import DropZone from '../../components/DropZone'
 import Attachment from '../../components/Attachment'
-import * as styles from './stylesDesktop.module.css'
+import styles from './stylesDesktop.module.css'
+
+const PUB_BOILERPLATE = {
+  cover: '',
+  author: '0xpetra',
+  title: 'Musikita'
+}
 
 export const DesktopWindow: React.FC = observer(({layers}) => {
   const [attachments, setAttachments] = useState([]);
-  const [isUploading, setIsUploading] = useState(false)
-  
-  const DropZone = () => {
-    const onDrop = useCallback(async acceptedFiles => {
-      // TODO: 
-      const publicationContent = {
-        audio: acceptedFiles[0]
-      }
-      const uploadResponse = await uploadFiles(attachments, publicationContent, setIsUploading);
-      // const metadata = await client.store({
-      //   name: 'Beat',
-      //   description: 'Metadata!',
-      //   image: acceptedFiles[0]
-      // })
-      const id = crypto.randomBytes(32).toString('hex');
-      const pk = "0x"+id;
-      const entitiId = utils.computeAddress(pk);
-      console.log("🚀 ~ file: DesktopWindow.tsx ~ line 26 ~ onDrop ~ entitiId, metadata.ipnft", entitiId, metadata.ipnft)
-      layers.network.api.uploadSound(entitiId, metadata.ipnft)
-    }, [])
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-  
-    
-  return (
-    <div {...getRootProps()}  >
-      <input {...getInputProps()} /> 
-      
-      <div className={styles.dropzone}>
-      {
-        isDragActive ?
-          <p>Drop the music files here ...</p> :
-          <p>Drag 'n' drop some music files here</p>
-        }
-    </div>
-    </div>
-  )
-}
+  const [publication, setPublication] = useState(PUB_BOILERPLATE);
+  const toast = useToast()
+
+  const createPost = (item) => {
+    setAttachments([])
+    toast({
+      title: 'Success',
+      description: "Your sound has been uploaded.",
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
+  }
 
 return (  
     <Box width="100%" height="100%" className={styles.desktop}>
       <div className={styles.content}>
-        <img src="/img/eruwhite.png" />
-        <Box mt={60} fontSize='2em'>Upload Beats</Box>
-        {/* <DropZone /> */}
-        <Attachment attachments={attachments} setAttachments={setAttachments} />
-        <h5>(Use mobile for remixing)</h5>
+        <Flex alignItems="center" justifyContent="center">
+          <img src="/img/eruwhite.png" />
+        </Flex>
+
+
+        {/* <Attachment attachments={attachments} setAttachments={setAttachments} /> */}
+
+        {/* This component uploads metadata from entity to arweave */}
+        {/* TODO:  */}
+        {attachments.length > 0 ? 
+          <div>   
+          {attachments.map((audio, id) => {
+            const src = getSrc(audio.item);
+            console.log("🚀 ~ file: DropZone.tsx:98 ~ {attachments.map ~ src", src)
+            return <Box key={id}>
+              {/* <Text>{item.name}</Text> */}
+              <Audio src={src} isNew={true} publication={publication} setPublication={setPublication} txn={null} />
+              {/* TODO: Remove (Should also remove metadata on IPFS) */}
+              {/* <IconButton aria-label='Remove ' as={FiTrash} /> */}
+            </Box>
+          })}
+          </div>
+          :
+          <div>
+            <Text mt={10} fontSize='2em' color="white">Upload Beats</Text>
+            {/* // This component handles IPFS uploads and attached components. Also shows attached file data */}
+            <DropZone setAttachments={setAttachments} attachments={attachments} />
+          </div>
+          }
+        <Text color="white">(Use mobile for remixing)</Text>
         {/* TODO: Copy link to share */}
         {/* <a>Copy</a> */}
       </div>

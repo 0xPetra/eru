@@ -15,16 +15,23 @@ const params = {
   Key: uuid()
 };
 
+const getTokens = async () => {
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    return await axios.get('http://localhost:9999/.netlify/functions/token');
+  } else {
+    return await axios.get('/.netlify/functions/token');
+  }
+}
+
 const getS3Client = async () => {
   try {
-  const token = await axios.get('/.netlify/functions/token');
-  console.log("🚀 ~ file: uploadToIPFS.ts ~ line 15 ~ getS3Client ~ token", token)  
+  const tokens = await getTokens();
   const client = new S3({
     endpoint: EVER_API,
     credentials: {
-      accessKeyId: token.data?.accessKeyId,
-      secretAccessKey: token.data?.secretAccessKey,
-      sessionToken: token.data?.sessionToken
+      accessKeyId: tokens.data?.accessKeyId,
+      secretAccessKey: tokens.data?.secretAccessKey,
+      sessionToken: tokens.data?.sessionToken
     },
     region: 'us-west-2',
     maxAttempts: 3
@@ -33,6 +40,7 @@ const getS3Client = async () => {
     return client;
   } catch (error) {
     // toast
+    console.error("You might need to run 'yarn netlify functions:serve' to run serverless functions localy")
     console.error(error)
   }
 };
@@ -47,8 +55,7 @@ const uploadToIPFS = async (data: any): Promise<AttachmentType[]> => {
     const client = await getS3Client();
     const files = Array.from(data);
     const attachments = await Promise.all(
-      files.map(async (_: any, i: number) => {
-        const file = data.item(i);
+      files.map(async (file: any) => {
         await client.putObject({ ...params, Body: file, ContentType: file.type });
         const result = await client.headObject(params);
         const metadata = result.Metadata;
@@ -60,9 +67,9 @@ const uploadToIPFS = async (data: any): Promise<AttachmentType[]> => {
         };
       })
     );
-
     return attachments;
-  } catch {
+  } catch (error) {
+    console.error(error);
     return [];
   }
 };

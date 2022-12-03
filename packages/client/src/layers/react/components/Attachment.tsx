@@ -1,9 +1,3 @@
-// import { Spinner } from '@components/UI/Spinner';
-// import { Tooltip } from '@components/UI/Tooltip';
-// import useOnClickOutside from '@components/utils/hooks/useOnClickOutside';
-// import type { LensterAttachment } from '@generated/lenstertypes';
-// import { Menu, Transition } from '@headlessui/react';
-import { MusicNoteIcon } from '@heroicons/react/outline';
 import type { ChangeEvent, FC } from 'react';
 import { useRef, useState } from 'react';
 import { useToast, Flex } from '@chakra-ui/react'
@@ -71,6 +65,7 @@ const Attachment: FC<Props> = ({ attachments, setAttachments }) => {
     evt.preventDefault();
     setShowMenu(false);
     setLoading(true);
+    console.log("🚀 ~ file: Attachment.tsx:73 ~ handleAttachment ~ evt.target.files", evt.target.files)
 
     try {
       // Count check

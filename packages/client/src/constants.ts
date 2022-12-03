@@ -36,6 +36,8 @@ export const ERROR_MESSAGE = 'Something went wrong!';
 export const SIGN_WALLET = 'Please sign in your wallet.';
 export const SIGN_ERROR = 'Failed to sign data';
 
+export const COVER = 'cover';
+
 // Application
 export const APP_NAME = 'Eru';
 export const APP_VERSION = packageJson.version;
@@ -55,7 +57,7 @@ export const ALLOWED_AUDIO_TYPES = [
   'audio/flac'
 ];
 export const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/webm', 'video/quicktime'];
-export const ALLOWED_MEDIA_TYPES = [...ALLOWED_VIDEO_TYPES, ...ALLOWED_IMAGE_TYPES, ...ALLOWED_AUDIO_TYPES];
+export const ALLOWED_MEDIA_TYPES = [...ALLOWED_AUDIO_TYPES];
 
 // Leafwatch
 export const DATADOG_TOKEN = process.env.NEXT_PUBLIC_DATADOG_API_KEY ?? '';
@@ -69,5 +71,5 @@ export const POLYGONSCAN_URL = IS_MAINNET ? 'https://polygonscan.com' : 'https:/
 export const RARIBLE_URL = IS_MAINNET ? 'https://rarible.com' : 'https://rinkeby.rarible.com';
 export const ARWEAVE_GATEWAY = 'https://arweave.net';
 export const IMGPROXY_URL = 'https://media.lenster.xyz';
-export const IPFS_GATEWAY = 'https://lens.infura-ipfs.io/ipfs/';
+export const IPFS_GATEWAY = '.ipfs.4everland.io';
 export const EVER_API = 'https://endpoint.4everland.co';

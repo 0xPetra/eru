@@ -32,6 +32,7 @@ async function bootGame() {
     // Remove react when starting to reboot layers, reboot react once layers are rebooted
     mountReact.current(false);
 
+    // TODO: Set statig config or dropdown (no params)
     const params = new URLSearchParams(window.location.search);
     const worldAddress = params.get("worldAddress");
     let privateKey = params.get("burnerWalletPrivateKey");
