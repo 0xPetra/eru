@@ -8,7 +8,6 @@
 }
 
 .content  {
-  padding: 10vh;
 }
 
 .dropzone {
@@ -16,8 +15,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  margin: 40px;
+  padding: 70px;
+  margin-top: 40px;
   border-width: 2px;
   border-radius: 2px;
   border-color: #C527DF;
@@ -26,4 +25,5 @@
   color: #C527DF;
   outline: none;
   transition: border .24s ease-in-out;
+  cursor: pointer;
 }

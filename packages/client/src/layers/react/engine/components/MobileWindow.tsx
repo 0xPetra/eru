@@ -126,7 +126,7 @@ export const MobileWindow: React.FC = observer(({ layers }) => {
             Soundtrack
           </p>
           <div>
-            <PlayIcon color="white" className={styles.playstop}/>
+            <PlayIcon  className={styles.playstop}/>
           </div>
         </div>
       </CircularProgressLabel>
@@ -189,7 +189,7 @@ export const MobileWindow: React.FC = observer(({ layers }) => {
 
         <div className={styles.topWrapper}>
           <div style={{ height: "35vh" }}>
-            <ArrowLeftIcon color="white" className={styles.arrowLeft} />
+            <ArrowLeftIcon  className={styles.arrowLeft} />
             <div className={styles.circle}>
               <CircularProgress value={100} size='80vw' thickness='2px' color='#C527DF' trackColor='#C527DF' />
             </div>
@@ -198,7 +198,7 @@ export const MobileWindow: React.FC = observer(({ layers }) => {
                 <InnerTrack />
               </CircularProgress>
             </div>
-            <ArrowRightIcon color="white" className={styles.arrowRight} />
+            <ArrowRightIcon  className={styles.arrowRight} />
           </div>
         </div>
 

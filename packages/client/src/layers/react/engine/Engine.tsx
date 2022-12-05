@@ -6,8 +6,9 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Layers } from "../../../types";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 import { BrowserView, MobileView } from 'react-device-detect';
+import theme from './theme'
 
 export const Engine: React.FC<{
   setLayers: { current: (layers: Layers) => void };
@@ -25,24 +26,22 @@ export const Engine: React.FC<{
   if (!mounted || !layers) return customBootScreen || <BootScreen />;
 
   return (
-          <LayerContext.Provider value={layers}>
-            <EngineContext.Provider value={EngineStore}>
+            <LayerContext.Provider value={layers}>
+              <EngineContext.Provider value={EngineStore}>
+              <ChakraProvider theme={theme}>
 
-            {/* <ComponentRenderer /> */}
+              {/* <ComponentRenderer /> */}
 
-            <BrowserView>
-              <ChakraProvider>
-              <DesktopWindow layers={layers} />
+              <BrowserView>
+                <DesktopWindow layers={layers} />
+              </BrowserView>
+              
+              <MobileView>
+                  <MobileWindow layers={layers} />
+              </MobileView>
+
               </ChakraProvider>
-            </BrowserView>
-            
-            <MobileView>
-              <ChakraProvider>
-                <MobileWindow layers={layers} />
-              </ChakraProvider>
-            </MobileView>
-
-            </EngineContext.Provider>
-          </LayerContext.Provider>
+              </EngineContext.Provider>
+            </LayerContext.Provider>
   );
 });

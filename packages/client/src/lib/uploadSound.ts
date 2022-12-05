@@ -9,7 +9,7 @@ import getUserLocale from './getUserLocale';
 
 import {APP_NAME, ALLOWED_AUDIO_TYPES} from '../constants'
 
-export const uploadFiles = async (attachments, publicationContent, setIsUploading) => {
+const uploadSound = async (attachments, publicationContent, connectedAddress) => {
   // hooks
   const [postContentError, setPostContentError] = useState('')
   const [audioPublication, setPublicationContent] = useState(null)
@@ -41,19 +41,19 @@ export const uploadFiles = async (attachments, publicationContent, setIsUploadin
     attributes.push({
       traitType: 'author',
       displayType: 'string',
-      value: 'Iluvaltar' // TODO: Agregar campo y completar autor o deberia ser la wallet? // audioPublication.author
+      value: connectedAddress // TODO: Agregar campo y completar autor o deberia ser la wallet? // audioPublication.author
     });
   }
 
   const arweaveId = await uploadToArweave({
     version: '2.0.0',
     metadata_id: uuid(),
-    description: trimify(publicationContent),
-    content: trimify(publicationContent),
+    // description: trimify(publicationContent),
+    // content: trimify(publicationContent),
     // TODO: Add address
     external_url: `https://eru.gg/${currentProfile?.handle}`,
-    // image: attachments.length > 0 ? getAttachmentImage() : textNftImageUrl,
-    // imageMimeType: attachments.length > 0 ? getAttachmentImageMimeType() : 'image/svg+xml',
+    image: publicationContent?.cover.item,
+    imageMimeType: publicationContent?.cover.mime,
     name: publicationContent.title,
     tags: getTags(publicationContent),
     animation_url: getAnimationUrl(),
@@ -64,7 +64,9 @@ export const uploadFiles = async (attachments, publicationContent, setIsUploadin
     locale: getUserLocale(),
     createdOn: new Date(),
     appId: APP_NAME
-  }).finally(() => setIsUploading(false));
+  });
 
   return arweaveId;
 }
+
+export default uploadSound;

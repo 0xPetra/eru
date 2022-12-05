@@ -1,13 +1,14 @@
-import type { ChangeEvent, FC, Ref } from 'react';
+import { FC, Ref, useCallback } from 'react';
 import React, { useState } from 'react';
-import { useToast, Box, Image, Icon, Spinner, Stack, Text } from '@chakra-ui/react'
+import { useToast, Flex, Image, Icon, Spinner, Stack, Text, Box } from '@chakra-ui/react'
 import { FiImage } from "react-icons/fi";
+import {useDropzone} from 'react-dropzone'
 
+import { ALLOWED_IMAGE_TYPES } from '../../../../constants';
 
+import handleAttachment from '../../../../lib/handleAttachment';
 import getIPFSLink from '../../../../lib/getIPFSLink';
 import imageProxy from '../../../../lib/imageProxy';
-import uploadToIPFS from '../../../../lib/uploadToIPFS';
-import { COVER, ERROR_MESSAGE } from '../../../../constants';
 
 interface Props {
   isNew: boolean;
@@ -17,63 +18,42 @@ interface Props {
 }
 
 const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => {
-  const [loading, setLoading] = useState(false);
+  console.log("🚀 ~ file: CoverImage.tsx:22 ~ cover", cover)
+  const [isUploading, setIsUploading] = useState(false);
   const toast = useToast();
 
-  const onError = (error: any) => {
-    toast({
-      title: 'Error',
-      description: error?.data?.message ?? error?.message ?? ERROR_MESSAGE,
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    })
-    setLoading(false);
-  };
+  const onDrop = useCallback(async acceptedFiles => {
+    handleAttachment(acceptedFiles, setIsUploading, setCover, ALLOWED_IMAGE_TYPES, toast);
+  }, [])
 
-  const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      try {
-        setLoading(true);
-        const attachment = await uploadToIPFS(e.target.files);
-        setCover(attachment[0].item, attachment[0].type);
-      } catch (error) {
-        onError(error);
-      }
-    }
-  };
+  const {getRootProps, getInputProps} = useDropzone({onDrop, accept: { "image/jpg": ALLOWED_IMAGE_TYPES }})
 
   return (
-    <Box pos="relative"  >
-    {/* <div className="relative flex-none overflow-hidden group"> */}
-
-      <Image
-        borderRadius='24px'
-        objectFit='cover'
-        // boxSize='150px'
-        maxW={{ base: '100%', sm: '200px' }}
-        src={cover ? imageProxy(getIPFSLink(cover), COVER) : cover}
-        alt='Sound cover Image'
-        ref={imageRef}
-      />
-
-      {isNew && !cover && (
-        <Box>
-          {loading && !cover ? (
-            <Spinner size='md' />
-          ) : (
-            <label className="form-control d-flex justify-content-start align-items-center" htmlFor="file-name" >
-              <Stack>
-                <Icon as={FiImage} />
-                <span >Add cover</span>
-              </Stack>
-            </label>
-          )}
-          <input type="file" accept=".png, .jpg, .jpeg, .svg" className="hidden w-full" onChange={onChange} id="file-name"/>
-        </Box>
-      )}
-
-    </Box>
+    <Flex align="center" justify="center" backgroundColor="grey">
+          {isNew && !cover ? (
+            <div {...getRootProps()}  >
+            <input {...getInputProps()} />
+              {isUploading && !cover ? 
+                <Spinner size='md'/>
+                :
+                <Flex align="center" justify="center">
+                  <Stack>
+                  <Icon as={FiImage} size="md"/>
+                  <Text as="h3">Add cover</Text>
+                  </Stack>
+                </Flex>
+              }
+            </div> )
+            :
+            <Image
+              borderLeftRadius='24px'
+              objectFit='cover'
+              src={cover ? imageProxy(getIPFSLink(cover[0].item)) : cover}
+              alt='Sound cover Image'
+              ref={imageRef}
+            />
+            }
+        </Flex>
   );
 };
 
