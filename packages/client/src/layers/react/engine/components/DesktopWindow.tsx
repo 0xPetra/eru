@@ -4,6 +4,7 @@ import { Box, Text, useToast, Flex } from '@chakra-ui/react'
 
 import getIPFSLink from '../../../../lib/getIPFSLink'
 
+import NavBar from '../../components/NavBar'
 import Audio from '../../components/Audio'
 import DropZone from '../../components/DropZone'
 import styles from './stylesDesktop.module.css'
@@ -15,11 +16,8 @@ export const DesktopWindow: React.FC = observer(({layers}) => {
   
 return (  
     <Box width="100%" height="100%" className={styles.desktop}>
+      <NavBar layers={layers} />
       <div className={styles.content}>
-        <Flex alignItems="center" justifyContent="center" pt={10}>
-          <img src="/img/eruwhite.png" width="10%" />
-        </Flex>
-
         {/* This component uploads metadata from entity to arweave */}
         {/* TODO:  */}
         {attachments.length > 0 ? 

@@ -29,7 +29,7 @@ const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => 
   const {getRootProps, getInputProps} = useDropzone({onDrop, accept: { "image/jpg": ALLOWED_IMAGE_TYPES }})
 
   return (
-    <Flex align="center" justify="center" backgroundColor="grey">
+    <Flex align="center" justify="center" backgroundColor="grey" >
           {isNew && !cover ? (
             <div {...getRootProps()}  >
             <input {...getInputProps()} />
@@ -52,9 +52,10 @@ const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => 
               src={cover ? imageProxy(getIPFSLink(cover[0].item)) : cover}
               alt='Sound cover Image'
               ref={imageRef}
+              width="auto"
             />
             }
-        </Flex>
+    </Flex>
   );
 };
 

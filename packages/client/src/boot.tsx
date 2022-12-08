@@ -33,16 +33,31 @@ async function bootGame() {
     mountReact.current(false);
 
     // TODO: Set statig config or dropdown (no params)
+
+    let worldAddress, privateKey, chainIdString, jsonRpc, wsRpc, checkpointUrl, devMode, initialBlockNumberString, initialBlockNumber;
+
     const params = new URLSearchParams(window.location.search);
-    const worldAddress = params.get("worldAddress");
-    let privateKey = params.get("burnerWalletPrivateKey");
-    const chainIdString = params.get("chainId");
-    const jsonRpc = params.get("rpc") || undefined;
-    const wsRpc = params.get("wsRpc") || undefined; // || (jsonRpc && jsonRpc.replace("http", "ws"));
-    const checkpointUrl = params.get("checkpoint") || undefined;
-    const devMode = params.get("dev") === "true";
-    const initialBlockNumberString = params.get("initialBlockNumber");
-    const initialBlockNumber = initialBlockNumberString ? parseInt(initialBlockNumberString) : 0;
+    if (params.get("worldAddress")) {
+      worldAddress = params.get("worldAddress");
+      privateKey = params.get("burnerWalletPrivateKey");
+      chainIdString = params.get("chainId");
+      jsonRpc = params.get("rpc") || undefined;
+      wsRpc = params.get("wsRpc") || undefined; // || (jsonRpc && jsonRpc.replace("http", "ws"));
+      checkpointUrl = params.get("checkpoint") || undefined;
+      devMode = params.get("dev") === "true";
+      initialBlockNumberString = params.get("initialBlockNumber");
+      initialBlockNumber = initialBlockNumberString ? parseInt(initialBlockNumberString) : 0;
+    } else {
+      worldAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+      chainIdString = '31337';
+      jsonRpc = 'http://localhost:8545';
+      wsRpc = 'ws://localhost:8545'; // || (jsonRpc && jsonRpc.replace("http", "ws"));
+      checkpointUrl = params.get("checkpoint") || undefined;
+      devMode = true;
+      initialBlockNumberString = undefined;
+      initialBlockNumber = '13';
+      privateKey = process.env.PRIVATE_KEY;
+    }
 
     if (!privateKey) {
       privateKey = localStorage.getItem("burnerWallet") || Wallet.createRandom().privateKey;

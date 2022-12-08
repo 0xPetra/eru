@@ -1,5 +1,5 @@
-import { ADDRESS_REGEX } from 'src/constants';
 
+export const ADDRESS_REGEX = /^(0x)?[\da-f]{40}$/i;
 /**
  *
  * @param address - Complete ethereum address

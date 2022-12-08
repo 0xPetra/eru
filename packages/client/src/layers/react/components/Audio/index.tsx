@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { FiPlay, FiPause } from "react-icons/fi";
 import { useFormik } from "formik";
-import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack } from '@chakra-ui/react'
+import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack, Text } from '@chakra-ui/react'
 import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react'
 import { object, string } from 'zod';
 import { utils } from "ethers";
@@ -117,6 +117,7 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
         mx={{sm: 5, md: 20}}
         direction={{ base: 'column', sm: 'row' }}
         overflow='hidden'
+        maxH='300px'
         boxShadow='xl'
       >
         <CoverImage
@@ -174,8 +175,7 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
 
                 <HStack spacing='24px' justifyContent='space-around'>
 
-                  <HStack>
-                  <Text mb='8px'>BPM</Text>
+                  <Text mb='8px'>TYPE</Text>
                   <Select 
                     id='type'
                     placeholder='Type' 
@@ -188,10 +188,8 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
                     <option value='track'>Track</option>
                     <option value='song'>Song</option>
                   </Select>
-                  </HStack>
 
-                  <HStack>
-                  <Text mb='8px'>BPM</Text>
+                  <Text mb='8px'>KEY</Text>
                   <Select 
                     id='key'
                     placeholder='Key' 
@@ -203,9 +201,7 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
                     <option value='C'>C</option>
                     <option value='F'>F</option>
                   </Select>
-                  </HStack>
 
-                  <HStack>
                   <Text mb='8px'>BPM</Text>
                   <NumberInput size='sm' variant='outline'>
                     <NumberInputField />
@@ -214,19 +210,6 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
                       <NumberDecrementStepper />
                     </NumberInputStepper>
                   </NumberInput>
-                  </HStack>
-
-                  <Select 
-                    id='bpm'
-                    placeholder='BPM' 
-                    size='sm'
-                    onChange={formik.handleChange}
-                    value={formik.values.bpm}
-                    >
-                    <option value='option1'>Option 1</option>
-                    <option value='option2'>Option 2</option>
-                    <option value='option3'>Option 3</option>
-                  </Select>
 
                 </HStack>
 
