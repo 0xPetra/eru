@@ -12,23 +12,12 @@ import styles from './stylesDesktop.module.css'
 
 export const DesktopWindow: React.FC = observer(({layers}) => {
   const [attachments, setAttachments] = useState([]);
-  const [publication, setPublication] = useState(null);
-  const toast = useToast()
-
-  const {
-    network: {
-      world,
-      components: { SoundUri },
-      network: { connectedAddress },
-    },
-  } = layers;
-
-
+  
 return (  
     <Box width="100%" height="100%" className={styles.desktop}>
       <div className={styles.content}>
         <Flex alignItems="center" justifyContent="center" pt={10}>
-          <img src="/img/eruwhite.png" width="20%" />
+          <img src="/img/eruwhite.png" width="10%" />
         </Flex>
 
         {/* This component uploads metadata from entity to arweave */}
@@ -39,7 +28,7 @@ return (
             const src = getIPFSLink(audio.item);
             return <Box key={id}>
               {/* <Text>{item.name}</Text> */}
-              <Audio src={src} isNew={true} attachments={attachments} publication={publication} setPublication={setPublication} connectedAddress={connectedAddress} />
+              <Audio src={src} isNew={true} attachments={attachments} layers={layers}  />
               {/* TODO: Remove (Should also remove metadata on IPFS) */}
               {/* <IconButton aria-label='Remove ' as={FiTrash} /> */}
             </Box>

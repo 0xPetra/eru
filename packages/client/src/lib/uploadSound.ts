@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { v4 as uuid } from 'uuid';
 
 
@@ -9,18 +8,9 @@ import getUserLocale from './getUserLocale';
 
 import {APP_NAME, ALLOWED_AUDIO_TYPES} from '../constants'
 
-const uploadSound = async (attachments, publicationContent, connectedAddress) => {
+const uploadSound = async (attachments, coverImg, formData, connectedAddress) => {
   // hooks
-  const [postContentError, setPostContentError] = useState('')
-  const [audioPublication, setPublicationContent] = useState(null)
-
-
-  const isAudioComment = ALLOWED_AUDIO_TYPES.includes(attachments[0]?.type);
-  
-  // effects
-  useEffect(() => {
-    setPostContentError('');
-  }, [audioPublication]);
+  // const isAudioComment = ALLOWED_AUDIO_TYPES.includes(attachments[0]?.type);
   
   // handlers
   const getAnimationUrl = () => {
@@ -35,27 +25,29 @@ const uploadSound = async (attachments, publicationContent, connectedAddress) =>
       traitType: 'type',
       displayType: 'string',
       value: 'audio'
-    }
-  ];
-  if (isAudioComment) {
-    attributes.push({
+    },
+    {
       traitType: 'author',
       displayType: 'string',
-      value: connectedAddress // TODO: Agregar campo y completar autor o deberia ser la wallet? // audioPublication.author
-    });
-  }
+      value: `${connectedAddress}` // TODO: Agregar campo y completar autor o deberia ser la wallet? // audioPublication.author
+    }
+  ];
 
-  const arweaveId = await uploadToArweave({
+  const vlaues = JSON.stringify({
     version: '2.0.0',
     metadata_id: uuid(),
     // description: trimify(publicationContent),
     // content: trimify(publicationContent),
     // TODO: Add address
-    external_url: `https://eru.gg/${currentProfile?.handle}`,
-    image: publicationContent?.cover.item,
-    imageMimeType: publicationContent?.cover.mime,
-    name: publicationContent.title,
-    tags: getTags(publicationContent),
+    external_url: `https://eru.gg/${connectedAddress}`,
+    // external_url: `https://eru.gg/${currentProfile?.handle}`,
+    image: coverImg.item,
+    imageMimeType: coverImg.mime,
+    name: formData.title,
+    type: formData.type,
+    key: formData.key,
+    bpm: formData.bpm,
+    tags: getTags(formData),
     animation_url: getAnimationUrl(),
     mainContentFocus: 'AUDIO',
     contentWarning: null, // TODO
@@ -64,7 +56,9 @@ const uploadSound = async (attachments, publicationContent, connectedAddress) =>
     locale: getUserLocale(),
     createdOn: new Date(),
     appId: APP_NAME
-  });
+  })
+
+  const arweaveId = await uploadToArweave(vlaues);
 
   return arweaveId;
 }

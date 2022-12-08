@@ -1,5 +1,5 @@
 import { AssumeRoleCommand, STSClient } from '@aws-sdk/client-sts';
-import { ERROR_MESSAGE, EVER_API } from '../src/constants';
+import { ERROR_MESSAGE, EVER_API } from '../constants';
 
 interface Data {
   accessKeyId?: string;

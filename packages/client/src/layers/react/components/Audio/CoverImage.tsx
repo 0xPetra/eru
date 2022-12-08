@@ -1,6 +1,6 @@
 import { FC, Ref, useCallback } from 'react';
 import React, { useState } from 'react';
-import { useToast, Flex, Image, Icon, Spinner, Stack, Text, Box } from '@chakra-ui/react'
+import { useToast, Flex, Image, Icon, Spinner, Text, Box } from '@chakra-ui/react'
 import { FiImage } from "react-icons/fi";
 import {useDropzone} from 'react-dropzone'
 
@@ -33,20 +33,21 @@ const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => 
           {isNew && !cover ? (
             <div {...getRootProps()}  >
             <input {...getInputProps()} />
+                <Flex align="center" justify="center" direction="column">
+                  <Box minW={100} p={10}>
               {isUploading && !cover ? 
-                <Spinner size='md'/>
+                <Spinner size='md' />
                 :
-                <Flex align="center" justify="center">
-                  <Stack>
+                <>
                   <Icon as={FiImage} size="md"/>
-                  <Text as="h3">Add cover</Text>
-                  </Stack>
-                </Flex>
+                  <Text as="h3">Add cover image</Text>
+                </>
               }
+              </Box>
+                </Flex>
             </div> )
             :
             <Image
-              borderLeftRadius='24px'
               objectFit='cover'
               src={cover ? imageProxy(getIPFSLink(cover[0].item)) : cover}
               alt='Sound cover Image'

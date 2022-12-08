@@ -15,12 +15,10 @@ const params = {
   Key: uuid()
 };
 
+const endpoint = location.hostname === "localhost" || location.hostname === "127.0.0.1" ? 'http://localhost:9999/.netlify/functions/token' : '/.netlify/functions/token'
+
 const getTokens = async () => {
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    return await axios.get('http://localhost:9999/.netlify/functions/token');
-  } else {
-    return await axios.get('/.netlify/functions/token');
-  }
+  return await axios.get(endpoint);
 }
 
 const getS3Client = async () => {

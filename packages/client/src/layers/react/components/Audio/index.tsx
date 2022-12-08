@@ -2,27 +2,26 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { FiPlay, FiPause } from "react-icons/fi";
 import { useFormik } from "formik";
-import { Input, FormControl, Select, useToast } from '@chakra-ui/react'
+import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack } from '@chakra-ui/react'
+import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react'
+import { object, string } from 'zod';
+import { utils } from "ethers";
+
 
 import type { FC } from 'react';
 import type { APITypes } from 'plyr-react';
 
-import getAttributeFromTrait from '../../../../lib/getAttributeFromTrait';
 import getThumbnailUrl from '../../../../lib/getThumbnailUrl';
 import uploadSound from '../../../../lib/uploadSound';
-import { object, string } from 'zod';
-import { Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack } from '@chakra-ui/react'
 
 import CoverImage from './CoverImage';
 import Player from './Player';
-
-
 interface Props {
   src: string;
   isNew?: boolean;
-  publication?: unknown;
-  setPublication?: unknown;
+  attachments?: unknown[];
   txn?: any;
+  layers: any
 }
 
 export const AudioPublicationSchema = object({  
@@ -30,12 +29,23 @@ export const AudioPublicationSchema = object({
   cover: string().trim().min(1, { message: 'Invalid cover image' })
 });
 
-const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPublication ,txn= null, connectedAddress= "0x0" }) => {
+const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }) => {
+  const [coverImg, setCoverImg] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const playerRef = useRef<APITypes>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
+  
   const toast = useToast();
 
+  const playerRef = useRef<APITypes>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  const {
+    network: {
+      world,
+      components: { SoundUri },
+      network: { connectedAddress },
+    },
+  } = layers;
+  
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -45,15 +55,25 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
     },
     // TODO: Check a;; fields comply
     onSubmit: (values) => {
-      publishSound();
+      publishSound(values);
       alert(JSON.stringify(values, null, 2))
     },
   })
 
-  const publishSound = async () => {
+  const publishSound = async (values) => {
     try {
       // TODO: Spinner/Loading
-      await uploadSound(attachments, publication, connectedAddress);
+      const arweaveId = await uploadSound(attachments, coverImg, values, connectedAddress);
+      console.log("🚀 ~ file: index.tsx:68 ~ publishSound ~ arweaveId", arweaveId)
+      // const id = crypto.randomBytes(32).toString('hex');
+      // const pk = "0x"+id;
+      const pk = window.localStorage.burnerWallet;
+      // TODO: Get burnerWallet from local cache
+      const entitiId = utils.computeAddress(pk);
+      console.log("🚀 ~ file: DesktopWindow.tsx ~ line 44 ~ onDrop ~ entitiId, metadata.ipnft", entitiId, arweaveId)
+      layers.network.api.uploadSound(entitiId, arweaveId)
+
+
       toast({
         title: 'Success',
         description: "Please choose less than 4 audio files.",
@@ -61,8 +81,10 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
         duration: 9000,
         isClosable: true,
       })
-      setPublication(null);
+      setCoverImg(null);
+      formik.resetForm();
     }catch (error) {
+      console.log("🚀 ~ file: index.tsx:87 ~ publishSound ~ error", error)
       toast({
         title: 'Error',
         description: "Error uploading sound.",
@@ -73,8 +95,8 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
     }
   }
 
-  // TODO: Add sound attached to publication
-  const isMintEnabled = formik.values.title && publication?.cover && publication?.sound;
+  // TODO: Add sound attached to coverImg
+  const isMintEnabled = formik.values.title && coverImg;
 
   console.log("🚀 ~ file: index.tsx:46 ~ handlePlayPause ~ playerRef.current?.plyr", playerRef.current?.plyr)
   const handlePlayPause = () => {
@@ -99,12 +121,12 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
       >
         <CoverImage
           isNew={isNew && !txn}
-          cover={isNew ? (txn ? txn?.cover : publication?.cover) : getThumbnailUrl(publication)}
+          cover={isNew ? (txn ? txn?.cover : coverImg) : getThumbnailUrl(coverImg)}
           setCover={(item) =>
-            setPublication({ ...publication, cover: item })
+            setCoverImg(item)
           }
           // setCover={(url, mimeType) =>
-          //   setPublication({ ...publication, cover: url, coverMimeType: mimeType })
+          //   setCoverImg({ ...publication, cover: url, coverMimeType: mimeType })
           // }
           imageRef={imageRef}
         />
@@ -151,6 +173,9 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
                 </FormControl>
 
                 <HStack spacing='24px' justifyContent='space-around'>
+
+                  <HStack>
+                  <Text mb='8px'>BPM</Text>
                   <Select 
                     id='type'
                     placeholder='Type' 
@@ -158,11 +183,15 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
                     onChange={formik.handleChange}
                     value={formik.values.type}
                     >
-                    <option value='option1'>Sound</option>
-                    <option value='option2'>Beat</option>
-                    <option value='option3'>Song</option>
+                    <option value='sound'>Sound</option>
+                    <option value='beat'>Beat</option>
+                    <option value='track'>Track</option>
+                    <option value='song'>Song</option>
                   </Select>
+                  </HStack>
 
+                  <HStack>
+                  <Text mb='8px'>BPM</Text>
                   <Select 
                     id='key'
                     placeholder='Key' 
@@ -170,10 +199,22 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
                     onChange={formik.handleChange}
                     value={formik.values.key}
                     >
-                    <option value='option1'>G</option>
-                    <option value='option2'>C</option>
-                    <option value='option3'>F</option>
+                    <option value='G'>G</option>
+                    <option value='C'>C</option>
+                    <option value='F'>F</option>
                   </Select>
+                  </HStack>
+
+                  <HStack>
+                  <Text mb='8px'>BPM</Text>
+                  <NumberInput size='sm' variant='outline'>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  </HStack>
 
                   <Select 
                     id='bpm'
@@ -200,10 +241,10 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, publication, setPub
             <Button 
               type='submit'
               variant='solid' 
-              isActive={isMintEnabled}
               disabled={!isMintEnabled}
               maxW={80} 
               bgGradient="linear(to-br, #553C9A , #FF0080)"
+              color="linear(to-br, #553C9A , #FF0080)"
             >
               Mint Sound
             </Button>
