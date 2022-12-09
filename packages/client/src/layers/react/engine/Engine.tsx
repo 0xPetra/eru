@@ -1,12 +1,16 @@
 import React from "react";
 import { LayerContext, EngineContext } from "./context";
 import { EngineStore } from "./store";
-import { BootScreen, MobileWindow, DesktopWindow, ComponentRenderer } from "./components";
+import { BootScreen, MobileWindow, DesktopWindow, Explorer, ErrorPage } from "./components";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Layers } from "../../../types";
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import { BrowserView, MobileView } from 'react-device-detect';
 import theme from './theme'
 
@@ -25,6 +29,30 @@ export const Engine: React.FC<{
 
   if (!mounted || !layers) return customBootScreen || <BootScreen />;
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      // element: <Explorer layers={layers} />,
+      element: <Explorer layers={layers} />,
+      // loader: BootScreen,
+      errorElement: <ErrorPage />,
+      // children: [
+        //   {
+          //     index: true,
+          //     path: "create",
+          //     element: <DesktopWindow layers={layers}/>,
+          //     // loader: BootScreen,
+          //   },
+          // ],
+    },
+    {
+      path: "create",
+      element: <DesktopWindow layers={layers}/>,
+      errorElement: <ErrorPage />,
+      // loader: BootScreen,
+    },
+  ]);
+
   return (
             <LayerContext.Provider value={layers}>
               <EngineContext.Provider value={EngineStore}>
@@ -33,7 +61,7 @@ export const Engine: React.FC<{
               {/* <ComponentRenderer /> */}
 
               <BrowserView>
-                <DesktopWindow layers={layers} />
+                <RouterProvider router={router} />
               </BrowserView>
               
               <MobileView>

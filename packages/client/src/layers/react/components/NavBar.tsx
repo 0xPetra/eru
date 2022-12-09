@@ -2,38 +2,26 @@ import { ReactNode } from 'react';
 import {
   Box,
   Flex,
-  Avatar,
   Link,
   Button,
   Menu,
   MenuButton,
   MenuList,
   Image,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
   Center,
+  LinkBox,
+  LinkOverlay,
+  Avatar,
+  MenuDivider,
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon, Icon } from '@chakra-ui/icons';
-import { FiUser, FiCopy } from "react-icons/fi";
+import { FiUser, FiCopy, FiMusic } from "react-icons/fi";
 
 import formatAddress from '../../../lib/formatAddress'
-
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={'#'}>
-    {children}
-  </Link>
-);
 
 const NavBar = ({layers}) => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -52,9 +40,11 @@ const NavBar = ({layers}) => {
       <Box px={4}>
       {/* <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}> */}
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box>         
+          <LinkBox>
+          <LinkOverlay href='/'>         
             <Image src='/img/eruwhite.png' alt='Eru Logo' height="60%" />
-          </Box>
+          </LinkOverlay>
+          </LinkBox>
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
@@ -89,12 +79,27 @@ const NavBar = ({layers}) => {
                     <p>{formatAddress(`${connectedAddress}`)} <Icon aria-label='Copy Address' as={FiCopy} size="sm" mx={5}/></p>
                   </Center>
                   <br />
-                  <MenuDivider />
+                  {/* <MenuDivider /> */}
                   {/* <MenuItem>Copy pk</MenuItem> */}
                   {/* <MenuItem>Account Settings</MenuItem> */}
                   {/* <MenuItem>Logout</MenuItem> */}
                 </MenuList>
               </Menu>
+              {location.pathname == "/" && <LinkBox>
+              <LinkOverlay href='create'>
+                <Button 
+                    leftIcon={<FiMusic />}
+                    type='submit'
+                    variant='solid' 
+                    maxW={80} 
+                    bgGradient="linear(to-br, #553C9A , #FF0080)"
+                    color="linear(to-br, #553C9A , #FF0080)"
+                    >
+                    Add Music
+                </Button>
+                </LinkOverlay>
+                    </LinkBox>
+                }
             </Stack>
           </Flex>
         </Flex>

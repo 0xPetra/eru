@@ -11,8 +11,8 @@ import styles from './stylesDesktop.module.css'
 
 
 
-export const DesktopWindow: React.FC = observer(({layers}) => {
-  const [attachments, setAttachments] = useState([]);
+export const Explorer: React.FC = observer(({layers}) => {
+const sounds = []
   
 return (  
     <Box width="100%" height="100%" className={styles.desktop}>
@@ -20,13 +20,14 @@ return (
       <div className={styles.content}>
         {/* This component uploads metadata from entity to arweave */}
         {/* TODO:  */}
-        {attachments.length > 0 ? 
+        {sounds.length > 0 ? 
           <div>   
-          {attachments.map((audio, id) => {
-            const src = getIPFSLink(audio.item);
+          {sounds.map((audio, id) => {
+            // const src = getIPFSLink(audio.item);
             return <Box key={id}>
               {/* <Text>{item.name}</Text> */}
-              <Audio src={src} isNew={true} attachments={attachments} layers={layers}  />
+              {/* <Audio src={src} isNew={true} attachments={attachments} layers={layers}  /> */}
+              <p>AAAA</p>
               {/* TODO: Remove (Should also remove metadata on IPFS) */}
               {/* <IconButton aria-label='Remove ' as={FiTrash} /> */}
             </Box>
@@ -34,13 +35,10 @@ return (
           </div>
           :
           <div>
-            <Text mt={10} fontSize='2em' >Upload Beats</Text>
-            {/* // This component handles IPFS uploads and attached components. Also shows attached file data */}
-            {/* TODO: Make attachments and setAttachment a general state */}
-            <DropZone setAttachments={setAttachments} attachments={attachments} />
+            <Text mt={10} fontSize='2em' >List of Beats</Text>
+            <Text>(Use mobile for remixing)</Text>
           </div>
           }
-        <Text>(Use mobile for remixing)</Text>
         {/* TODO: Copy link to share */}
         {/* <a>Copy</a> */}
       </div>

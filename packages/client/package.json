@@ -48,6 +48,7 @@
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.7.1",
     "react-is": "^18.0.0",
+    "react-router-dom": "^6.4.5",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
     "styled-components": "^5.3.5",
