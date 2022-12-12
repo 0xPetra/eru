@@ -51,14 +51,14 @@ async function bootGame() {
       initialBlockNumber = initialBlockNumberString ? parseInt(initialBlockNumberString) : 0;
     } else {
       worldAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-      chainIdString = '31337';
+      chainIdString = isDev() ? '31337' : '4242';
       // TODO: Switch for Optimism Goerli when deployed
-      jsonRpc = isDev() ? 'http://localhost:8545' : 'https://alpha-1-replica-0.bedrock-goerli.optimism.io';
-      wsRpc = isDev() ? 'ws://localhost:8545' : 'wss://alpha-1-replica-0.bedrock-goerli.optimism.io'; // || (jsonRpc && jsonRpc.replace("http", "ws"));
+      jsonRpc = isDev() ? 'http://localhost:8545' : 'https://follower.super-degen-chain.lattice.xyz';
+      wsRpc = isDev() ? 'ws://localhost:8545' : 'wss://follower.super-degen-chain.lattice.xyz';
       checkpointUrl = params.get("checkpoint") || undefined;
       devMode = isDev();
       initialBlockNumberString = undefined;
-      initialBlockNumber = '13';
+      initialBlockNumber = '14752190';
       privateKey = process.env.PRIVATE_KEY;
     }
 
