@@ -7,8 +7,8 @@ import {
   defineStringComponent,
 } from "@latticexyz/std-client";
 import { defineLoadingStateComponent } from "./components";
-import { SystemTypes } from "contracts/types/SystemTypes";
-import { SystemAbis } from "contracts/types/SystemAbis.mjs";
+import { SystemTypes } from "../../../types/SystemTypes";
+import { SystemAbis } from "../../../types/SystemAbis.mjs";
 import { GameConfig, getNetworkConfig } from "./config";
 import { BigNumber } from "ethers";
 import { Coord } from "@latticexyz/utils";
