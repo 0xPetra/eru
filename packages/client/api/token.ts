@@ -1,20 +1,11 @@
 import { AssumeRoleCommand, STSClient } from '@aws-sdk/client-sts';
 import { ERROR_MESSAGE, EVER_API } from '../constants';
 
-interface Data {
-  accessKeyId?: string;
-  secretAccessKey?: string;
-  sessionToken?: string;
-  bucketName?: string;
-  message?: string;
-  success: boolean;
-}
-
 const accessKeyId = process.env.EVER_ACCESS_KEY as string;
 const secretAccessKey = process.env.EVER_ACCESS_SECRET as string;
 const bucketName = process.env.NEXT_PUBLIC_EVER_BUCKET_NAME as string;
 
-exports.handler = async (event, context) => {
+export default function handler(req, res) {
   try {
     const stsClient = new STSClient({
       endpoint: EVER_API,
@@ -55,12 +46,9 @@ exports.handler = async (event, context) => {
       sessionToken: data.Credentials?.SessionToken
     }
 
-    return { statusCode: 200, body: JSON.stringify(response) };
+    return res.status(200).json({ success: true, body: response });
   } catch (error) {
     console.log(error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: ERROR_MESSAGE }),
-    };
+    return res.status(500).json({ success: false, message: ERROR_MESSAGE });
   }
-};
+}

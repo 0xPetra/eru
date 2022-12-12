@@ -52,4 +52,4 @@ yarn mud deploy --deployerPrivateKey <PRIVATE KEY> --deployClient --netlifySlug 
 
 ### Test serverless functions locally
 
-Run `netlify functions:serve` from the client directory.
+Run `vercel dev` from the client directory.
