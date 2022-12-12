@@ -3,6 +3,7 @@ import axios from 'axios';
 import { EVER_API } from '../constants';
 import { v4 as uuid } from 'uuid';
 
+import { isDev } from '../utils/isDev';
 interface AttachmentType {
   item: string;
   type: string;
@@ -15,7 +16,7 @@ const params = {
   Key: uuid()
 };
 
-const endpoint = location.hostname === "localhost" || location.hostname === "127.0.0.1" ? 'http://localhost:9999/.netlify/functions/token' : '/.netlify/functions/token'
+const endpoint = isDev() ? 'http://localhost:9999/.netlify/functions/token' : '/.netlify/functions/token'
 
 const getTokens = async () => {
   return await axios.get(endpoint);

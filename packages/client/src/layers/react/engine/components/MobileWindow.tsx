@@ -40,11 +40,6 @@ export const MobileWindow: React.FC = observer(({ layers }) => {
     },
   } = layers;
 
-  // console.log('======>>>>', layers)
-  // layers.network.api.move(0, {x: 10, y: 10})
-  // layers.network.api.uploadSound(0, 'ipfs://bafybeiaymn6d3rq55wazujua7dxzirunawa6xff4knct76m6shsnmhjgva/076 Chilled Beat 1 Stick.mid');
-
-
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {

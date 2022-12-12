@@ -39,7 +39,7 @@ const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => 
                 <Spinner size='md' />
                 :
                 <>
-                  <Icon as={FiImage} size="md"/>
+                  <Icon as={FiImage} />
                   <Text as="h3">Add cover image</Text>
                 </>
               }

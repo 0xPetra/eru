@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { FiPlay, FiPause } from "react-icons/fi";
 import { useFormik } from "formik";
-import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack, Text } from '@chakra-ui/react'
+import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack, Text, Circle } from '@chakra-ui/react'
 import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react'
 import { object, string } from 'zod';
 import { utils } from "ethers";
@@ -72,8 +72,6 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
       const entitiId = utils.computeAddress(pk);
       console.log("🚀 ~ file: DesktopWindow.tsx ~ line 44 ~ onDrop ~ entitiId, metadata.ipnft", entitiId, arweaveId)
       layers.network.api.uploadSound(entitiId, arweaveId)
-
-
       toast({
         title: 'Success',
         description: "Please choose less than 4 audio files.",
@@ -138,29 +136,28 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
           <CardBody>
             <HStack spacing='24px'>
             {playing && !playerRef.current?.plyr.paused ? (
-              <IconButton
-              colorScheme='purple'
-              size='lg'
-              borderRadius="full"
-              padding={2}
-              aria-label='Stop play'
-              onClick={handlePlayPause}
-              as={FiPause}
-              color="white"
-              />
+                <IconButton
+                  bgGradient="linear(to-br, #553C9A , #FF0080)"
+                  _hover={{
+                    bgGradient: 'linear(to-r, red.500, yellow.500)',
+                  }}
+                  size='lg'
+                  aria-label='Stop play'
+                  onClick={handlePlayPause}
+                  as={FiPause}
+                />
               ) : (
                 <IconButton
-                colorScheme='purple'
-                size='lg'
-                borderRadius="full"
-                padding={2}
-                aria-label='Start play'
-                onClick={handlePlayPause}
-                as={FiPlay}
-                color="white"
+                  bgGradient="linear(to-br, #553C9A , #FF0080)"
+                  _hover={{
+                    bgGradient: 'linear(to-r, red.500, yellow.500)',
+                  }}
+                  size='md'
+                  aria-label='Start play'
+                  onClick={handlePlayPause}
+                  as={FiPlay}
                 />
                 )}
-
               <Box>
                 <FormControl>
                   <Input 
@@ -170,6 +167,7 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
                     onChange={formik.handleChange}
                     value={formik.values.title}
                     my={3}
+                    size='lg'
                     />
                 </FormControl>
 
@@ -227,7 +225,9 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
               disabled={!isMintEnabled}
               maxW={80} 
               bgGradient="linear(to-br, #553C9A , #FF0080)"
-              color="linear(to-br, #553C9A , #FF0080)"
+              _hover={{
+                bgGradient: 'linear(to-r, red.500, yellow.500)',
+              }}
             >
               Mint Sound
             </Button>

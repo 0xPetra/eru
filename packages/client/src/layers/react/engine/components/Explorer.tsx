@@ -1,18 +1,71 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useReducer} from 'react'
 import { observer } from "mobx-react-lite";
 import { Box, Text } from '@chakra-ui/react'
+import { defineQuery, HasValue, getComponentValue, getComponentEntities, getComponentValueStrict } from "@latticexyz/recs";
 
 import getIPFSLink from '../../../../lib/getIPFSLink'
 
 import NavBar from '../../components/NavBar'
-import Audio from '../../components/Audio'
-import DropZone from '../../components/DropZone'
 import styles from './stylesDesktop.module.css'
-
+import { sounds } from '../constants'
 
 
 export const Explorer: React.FC = observer(({layers}) => {
-const sounds = []
+  const {
+    network: {
+      world,
+      components: { SoundUri },
+      network: { connectedAddress },
+    },
+  } = layers;
+  console.log("🚀 ~ file: Explorer.tsx:21 ~ constExplorer:React.FC=observer ~ SoundUri", SoundUri)
+
+const [soundList, setSoundList] = useState([])
+
+useEffect(() => {
+  ( async () => {
+    try {
+      console.log("🚀 ~ file: Explorer.tsx:41 ~ constExplorer:React.FC=observer ~ world.entityToIndex", `${world.entityToIndex}`)
+      if (world.entityToIndex.size > 0){
+        const entityId = sounds[0].entityId
+        const entityIndex = world.entityToIndex.get(entityId);
+        console.log("🚀 =======>>>>>", entityIndex);
+        const soundData = getComponentValueStrict(SoundUri, entityIndex);
+        setSoundList([soundData.value]);
+      }
+    } catch (error) {
+     console.error(error.message) 
+    }
+} )()
+}, [world.entityToIndex.size])
+
+
+//  const soundssss = SoundUri.values('SoundUri')[0].keys()
+//  console.log("🚀 ~ file: Explorer.tsx:27 ~ constExplorer:React.FC=observer ~ soundssss", soundssss)
+
+      // =====================================
+      // return query.update$.pipe(map(() => ({ matching: query.matching, world })));
+      
+      // This way we can "hear" changes related to a component (?)
+      // const componentId = '0x7777b33884e1d056a8ca979833d686abd267f9f8';
+      // const query = defineQuery([HasValue(SoundUri, { value: componentId })]);
+      // console.log("🚀 =======>>>>>", SoundUri.update$.pipe(map(() => ({ matching: query.matching, world }))))
+      // // console.log("🚀 =======>>>>>", query.update$.pipe(map(() => ({ matching: query.matching, world }))))
+        
+
+      // console.log("🚀 ~ file: MobileWindow.tsx ~ line 79 ~ fetchData ~ jsonMidi", jsonMidi)
+
+        // =====================================
+      // const componentEntities = getComponentEntities(SoundUri);
+      // console.log("🚀 ~ file: MobileWindow.tsx ~ line 88 ~ fetchData ~ componentEntities", componentEntities)
+      // const currentSound = getComponentValue(SoundUri, '0x7777b33884e1d056a8ca979833d686abd267f9f8');
+      // console.log("🚀 currentSound:", currentSound)
+
+
+      // const eee = [...getComponentEntities(SoundUri)].map((e) => {
+      //   const soundData = getComponentValueStrict(SoundUri, e);
+      //   console.log('soundData', e, '-', soundData)
+      // })
   
 return (  
     <Box width="100%" height="100%" className={styles.desktop}>
@@ -20,9 +73,13 @@ return (
       <div className={styles.content}>
         {/* This component uploads metadata from entity to arweave */}
         {/* TODO:  */}
-        {sounds.length > 0 ? 
+        {soundList.length > 0 ? 
           <div>   
-          {sounds.map((audio, id) => {
+          <div>
+            <Text fontSize='2em'>Sounds, beats and Music</Text>
+            <Text>(Use mobile for remixing)</Text>
+          </div>
+          {soundList.map((audio, id) => {
             // const src = getIPFSLink(audio.item);
             return <Box key={id}>
               {/* <Text>{item.name}</Text> */}
@@ -35,7 +92,7 @@ return (
           </div>
           :
           <div>
-            <Text mt={10} fontSize='2em' >List of Beats</Text>
+            <Text mt={10} fontSize='2em'>Nothing to show</Text>
             <Text>(Use mobile for remixing)</Text>
           </div>
           }

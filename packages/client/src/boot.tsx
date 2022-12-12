@@ -11,7 +11,9 @@ import { registerUIComponents as registerUIComponentsImport } from "./layers/rea
 import { Wallet } from "ethers";
 import * as dotenv from 'dotenv' 
 
-dotenv.config()
+dotenv.config();
+
+import { isDev } from './utils/isDev';
 
 // Assign variables that can be overridden by HMR
 let createNetworkLayer = createNetworkLayerImport;
@@ -50,10 +52,11 @@ async function bootGame() {
     } else {
       worldAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
       chainIdString = '31337';
-      jsonRpc = 'http://localhost:8545';
-      wsRpc = 'ws://localhost:8545'; // || (jsonRpc && jsonRpc.replace("http", "ws"));
+      // TODO: Switch for Optimism Goerli when deployed
+      jsonRpc = isDev() ? 'http://localhost:8545' : 'https://alpha-1-replica-0.bedrock-goerli.optimism.io';
+      wsRpc = isDev() ? 'ws://localhost:8545' : 'wss://alpha-1-replica-0.bedrock-goerli.optimism.io'; // || (jsonRpc && jsonRpc.replace("http", "ws"));
       checkpointUrl = params.get("checkpoint") || undefined;
-      devMode = true;
+      devMode = isDev();
       initialBlockNumberString = undefined;
       initialBlockNumber = '13';
       privateKey = process.env.PRIVATE_KEY;

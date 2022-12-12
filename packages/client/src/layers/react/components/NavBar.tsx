@@ -1,31 +1,28 @@
-import { ReactNode } from 'react';
 import {
   Box,
   Flex,
-  Link,
   Button,
   Menu,
   MenuButton,
   MenuList,
   Image,
-  useDisclosure,
-  useColorModeValue,
-  Stack,
   useColorMode,
   Center,
   LinkBox,
   LinkOverlay,
+  Stack,
   Avatar,
   MenuDivider,
+  Circle
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon, Icon } from '@chakra-ui/icons';
 import { FiUser, FiCopy, FiMusic } from "react-icons/fi";
+import Blockies from 'react-blockies';
 
 import formatAddress from '../../../lib/formatAddress'
 
 const NavBar = ({layers}) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
     network: {
@@ -34,6 +31,8 @@ const NavBar = ({layers}) => {
       network: { connectedAddress },
     },
   } = layers;
+
+  const stringAddress = `${connectedAddress}`
 
   return (
     <>
@@ -63,20 +62,31 @@ const NavBar = ({layers}) => {
                     size={'sm'}
                     src={'https://avatars.dicebear.com/api/male/username.svg'}
                   /> */}
-                  <Icon as={FiUser} size="md"/>
+                  <Icon as={FiUser}/>
                 </MenuButton>
                 <MenuList alignItems={'center'}>
                   <br />
                   <Center>
-                    {/* <Avatar
-                      size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
-                    /> */}
-                    <Icon as={FiUser} size="lg"/>
+                      <Avatar
+                        size={'xl'}
+                        variant="circular"
+                        // src={'https://avatars.dicebear.com/api/male/username.svg'}
+                        icon={<Circle>
+                          <Blockies
+                          seed={stringAddress} 
+                          size={10} 
+                          scale={14}
+                          bgColor="#100687" 
+                          spotColor="#FF0080" 
+                          className="identicon"
+                          />
+                          </Circle>
+                          }
+                      />
                   </Center>
                   <br />
                   <Center>
-                    <p>{formatAddress(`${connectedAddress}`)} <Icon aria-label='Copy Address' as={FiCopy} size="sm" mx={5}/></p>
+                    <p>{formatAddress(stringAddress)} <Icon aria-label='Copy Address' as={FiCopy} mx={5}/></p>
                   </Center>
                   <br />
                   {/* <MenuDivider /> */}
@@ -93,7 +103,9 @@ const NavBar = ({layers}) => {
                     variant='solid' 
                     maxW={80} 
                     bgGradient="linear(to-br, #553C9A , #FF0080)"
-                    color="linear(to-br, #553C9A , #FF0080)"
+                    _hover={{
+                      bgGradient: 'linear(to-r, red.500, yellow.500)',
+                    }}
                     >
                     Add Music
                 </Button>
