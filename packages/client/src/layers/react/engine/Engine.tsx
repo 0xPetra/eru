@@ -46,7 +46,7 @@ export const Engine: React.FC<{
           // ],
     },
     {
-      path: "create",
+      path: "/create",
       element: <DesktopWindow layers={layers}/>,
       errorElement: <ErrorPage />,
       // loader: BootScreen,
