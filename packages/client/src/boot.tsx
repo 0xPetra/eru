@@ -10,6 +10,7 @@ import { Engine as EngineImport } from "./layers/react/engine/Engine";
 import { registerUIComponents as registerUIComponentsImport } from "./layers/react/components";
 import { Wallet } from "ethers";
 
+import { GameConfig } from "./layers/network/config";
 import { isDev } from './utils/isDev';
 
 // Assign variables that can be overridden by HMR
@@ -55,7 +56,7 @@ async function bootGame() {
       checkpointUrl = params.get("checkpoint") || undefined;
       devMode = isDev();
       initialBlockNumberString = undefined;
-      initialBlockNumber = '14752190';
+      initialBlockNumber = 14752190;
       privateKey = import.meta.env.PRIVATE_KEY;
     }
 
@@ -64,9 +65,8 @@ async function bootGame() {
       localStorage.setItem("burnerWallet", privateKey);
     }
 
-    let networkLayerConfig;
     if (worldAddress && privateKey && chainIdString && jsonRpc) {
-      networkLayerConfig = {
+      const networkLayerConfig: GameConfig = {
         worldAddress,
         privateKey,
         chainId: parseInt(chainIdString),
@@ -76,12 +76,12 @@ async function bootGame() {
         devMode,
         initialBlockNumber,
       };
+      if (!layers.network) layers.network = await createNetworkLayer(networkLayerConfig);
+      if (!layers.react) layers.react = await createReactLayer(layers.network);
+      if (!networkLayerConfig) throw new Error("Invalid config");
     }
 
-    if (!networkLayerConfig) throw new Error("Invalid config");
 
-    if (!layers.network) layers.network = await createNetworkLayer(networkLayerConfig);
-    if (!layers.react) layers.react = await createReactLayer(layers.network);
 
     // Sync global time with phaser clock
     // Time.time.setPacemaker((setTimestamp) => {
@@ -93,7 +93,7 @@ async function bootGame() {
     // Start syncing once all systems have booted
     if (initialBoot) {
       initialBoot = false;
-      layers.network.startSync();
+      layers?.network?.startSync();
     }
 
     // Reboot react if layers have changed
@@ -126,7 +126,7 @@ async function bootGame() {
     import.meta.hot.accept("./layers/network/index.ts", async (module) => {
       if (reloadingNetwork) return;
       reloadingNetwork = true;
-      createNetworkLayer = module.createNetworkLayer;
+      createNetworkLayer = module?.createNetworkLayer;
       dispose("network");
       dispose("react");
       await rebootGame();
@@ -138,7 +138,7 @@ async function bootGame() {
     import.meta.hot.accept("./layers/react/index.ts", async (module) => {
       if (reloadingApp) return;
       reloadingApp = true;
-      createReactLayer = module.createReactLayer;
+      createReactLayer = module?.createReactLayer;
       dispose("react");
       await rebootGame();
       console.log("HMR Phaser");
@@ -169,7 +169,7 @@ function bootReact() {
   if (import.meta.hot) {
     // HMR React engine
     import.meta.hot.accept("./layers/Renderer/React/engine/Engine.tsx", async (module) => {
-      Engine = module.Engine;
+      Engine = module?.Engine;
       renderEngine();
     });
   }
@@ -177,7 +177,7 @@ function bootReact() {
   if (import.meta.hot) {
     // HMR React components
     import.meta.hot.accept("./layers/Renderer/React/components/index.ts", async (module) => {
-      registerUIComponents = module.registerUIComponents;
+      registerUIComponents = module?.registerUIComponents;
       registerUIComponents();
     });
   }

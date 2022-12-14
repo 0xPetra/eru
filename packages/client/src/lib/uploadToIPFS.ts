@@ -55,9 +55,9 @@ const uploadToIPFS = async (data: any): Promise<AttachmentType[]> => {
     const files = Array.from(data);
     const attachments = await Promise.all(
       files.map(async (file: any) => {
-        await client.putObject({ ...params, Body: file, ContentType: file.type });
-        const result = await client.headObject(params);
-        const metadata = result.Metadata;
+        await client?.putObject({ ...params, Body: file, ContentType: file.type });
+        const result = await client?.headObject(params);
+        const metadata = result?.Metadata;
 
         return {
           item: `ipfs://${metadata?.['ipfs-hash']}`,
@@ -81,9 +81,9 @@ const uploadToIPFS = async (data: any): Promise<AttachmentType[]> => {
 export const uploadFileToIPFS = async (file: File): Promise<AttachmentType | null> => {
   try {
     const client = await getS3Client();
-    await client.putObject({ ...params, Body: file, ContentType: file.type });
-    const result = await client.headObject(params);
-    const metadata = result.Metadata;
+    await client?.putObject({ ...params, Body: file, ContentType: file.type });
+    const result = await client?.headObject(params);
+    const metadata = result?.Metadata;
 
     return {
       item: `ipfs://${metadata?.['ipfs-hash']}`,

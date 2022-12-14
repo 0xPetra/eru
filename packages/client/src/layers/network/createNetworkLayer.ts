@@ -3,16 +3,15 @@ import { setupDevSystems } from "./setup";
 import {
   createActionSystem,
   setupMUDNetwork,
-  defineCoordComponent,
   defineStringComponent,
 } from "@latticexyz/std-client";
-import { defineLoadingStateComponent } from "./components";
-import { SystemTypes } from "../../../types/SystemTypes";
-import { SystemAbis } from "../../../types/SystemAbis.ts";
-import { GameConfig, getNetworkConfig } from "./config";
 import { BigNumber } from "ethers";
 import { Coord } from "@latticexyz/utils";
 
+import { GameConfig, getNetworkConfig } from "./config";
+import { defineLoadingStateComponent } from "./components";
+import { SystemTypes } from "../../../types/SystemTypes";
+import { SystemAbis } from "../../../types/SystemAbis";
 /**
  * The Network layer is the lowest layer in the client architecture.
  * Its purpose is to synchronize the client components with the contract components.

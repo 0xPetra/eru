@@ -8,13 +8,13 @@ import getUserLocale from './getUserLocale';
 
 import {APP_NAME, ALLOWED_AUDIO_TYPES} from '../constants'
 
-const uploadSound = async (attachments, coverImg, formData, connectedAddress) => {
+const uploadSound = async (attachments: any[], coverImg: { url?: string | undefined; mime: string; } | null, formData: unknown, connectedAddress: any) => {
   // hooks
   // const isAudioComment = ALLOWED_AUDIO_TYPES.includes(attachments[0]?.type);
   
   // handlers
   const getAnimationUrl = () => {
-    if (attachments.length > 0) {
+    if (attachments?.length > 0) {
       return attachments[0]?.item;
     }
     return null;
