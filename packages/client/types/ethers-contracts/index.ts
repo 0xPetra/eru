@@ -22,7 +22,6 @@ export type { SetOwnerSystem } from "./SetOwnerSystem";
 export type { SoundUriComponent } from "./SoundUriComponent";
 export type { StringComponent } from "./StringComponent";
 export type { System } from "./System";
-export type { Uint256Component } from "./Uint256Component";
 export type { UploadSoundSystem } from "./UploadSoundSystem";
 export type { World } from "./World";
 
@@ -47,6 +46,5 @@ export { SetOwnerSystem__factory } from "./factories/SetOwnerSystem__factory";
 export { SoundUriComponent__factory } from "./factories/SoundUriComponent__factory";
 export { StringComponent__factory } from "./factories/StringComponent__factory";
 export { System__factory } from "./factories/System__factory";
-export { Uint256Component__factory } from "./factories/Uint256Component__factory";
 export { UploadSoundSystem__factory } from "./factories/UploadSoundSystem__factory";
 export { World__factory } from "./factories/World__factory";

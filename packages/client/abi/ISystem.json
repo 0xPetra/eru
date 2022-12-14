@@ -1,10 +1,29 @@
 {
   "abi": [
     {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
       "inputs": [
         {
           "internalType": "bytes",
-          "name": "arguments",
+          "name": "args",
           "type": "bytes"
         }
       ],
@@ -31,13 +50,27 @@
       ],
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
   "methodIdentifiers": {
     "execute(bytes)": "09c5eabe",
-    "owner()": "8da5cb5b"
+    "owner()": "8da5cb5b",
+    "transferOwnership(address)": "f2fde38b"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"arguments\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/ISystem.sol\":\"ISystem\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":1000000},\"remappings\":[\":@latticexyz/=../../node_modules/@latticexyz/\",\":@manifoldxyz/=../../node_modules/@manifoldxyz/\",\":@opengsn/=../../node_modules/@opengsn/\",\":@openzeppelin/=../../node_modules/openzeppelin-solidity/\",\":@rari-capital/=../../node_modules/@rari-capital/\",\":base64-sol/=../../node_modules/base64-sol/\",\":base64/=../../node_modules/base64-sol/\",\":ds-test/=../../node_modules/ds-test/src/\",\":forge-std/=../../node_modules/forge-std/src/\",\":gsn/=../../node_modules/@opengsn/contracts/src/\",\":hardhat/=../../node_modules/hardhat/\",\":memmove/=../../node_modules/memmove/src/\",\":openzeppelin-solidity/=../../node_modules/openzeppelin-solidity/\",\":royalty-registry/=../../node_modules/@manifoldxyz/royalty-registry-solidity/contracts/\",\":solecs/=../../node_modules/@latticexyz/solecs/src/\",\":solmate/=../../node_modules/@rari-capital/solmate/src/\",\":std-contracts/=../../node_modules/@latticexyz/std-contracts/src/\"]},\"sources\":{\"/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/IOwned.sol\":{\"keccak256\":\"0x14dd27a7fe1bdd1d17d814a40bab1886a6204ba3e45996f45cf8c6bd412e403b\",\"license\":\"Unlicense\",\"urls\":[\"bzz-raw://b4a5677a2bcc9159d4a90b66af9a888e33ac3cf3eae08f0b8548e9510131ec82\",\"dweb:/ipfs/Qmdj7Jz274wP2KevSqdpFQc4msVi9jfkrNsQvCFoHNJcDG\"]},\"/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/ISystem.sol\":{\"keccak256\":\"0xb592e00cad8c4907f623e12ee8968b1a0d2d3233466616ce52908d97631f57bf\",\"license\":\"Unlicense\",\"urls\":[\"bzz-raw://9eaa438a69cf74ff00986908f7b38bddf67e5848ae7fb4ef1dbbf3aad42e830a\",\"dweb:/ipfs/QmXaho8gjkfA2yaU1kKSoP7xn8dBLGnq6QcgBEFfxh5tkU\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"owner()\":{\"returns\":{\"_0\":\"The address of the owner.\"}},\"transferOwnership(address)\":{\"details\":\"Set _newOwner to address(0) to renounce any ownership.\",\"params\":{\"_newOwner\":\"The address of the new owner of the contract\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"owner()\":{\"notice\":\"Get the address of the owner\"},\"transferOwnership(address)\":{\"notice\":\"Set the address of the new owner of the contract\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/ISystem.sol\":\"ISystem\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":1000000},\"remappings\":[\":@latticexyz/=../../node_modules/@latticexyz/\",\":@manifoldxyz/=../../node_modules/@manifoldxyz/\",\":@opengsn/=../../node_modules/@opengsn/\",\":@openzeppelin/=../../node_modules/openzeppelin-solidity/\",\":@rari-capital/=../../node_modules/@rari-capital/\",\":base64-sol/=../../node_modules/base64-sol/\",\":base64/=../../node_modules/base64-sol/\",\":ds-test/=../../node_modules/ds-test/src/\",\":forge-std/=../../node_modules/forge-std/src/\",\":gsn/=../../node_modules/@opengsn/contracts/src/\",\":hardhat/=../../node_modules/hardhat/\",\":memmove/=../../node_modules/memmove/src/\",\":openzeppelin-solidity/=../../node_modules/openzeppelin-solidity/\",\":royalty-registry/=../../node_modules/@manifoldxyz/royalty-registry-solidity/contracts/\",\":solecs/=../../node_modules/@latticexyz/solecs/src/\",\":solmate/=../../node_modules/@rari-capital/solmate/src/\",\":std-contracts/=../../node_modules/@latticexyz/std-contracts/src/\"]},\"sources\":{\"/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/IERC173.sol\":{\"keccak256\":\"0x90a8a25e49a0a5b34ec65d1795a374ceb6ff7a8f15ff1b22bbd669a7f9fde4ec\",\"license\":\"Unlicense\",\"urls\":[\"bzz-raw://a943d58a14b9000f0f31621e247015475466f449c2e83175c4ad43607502426c\",\"dweb:/ipfs/QmZv721wBRGHctKKprt5eDgYg89sojSNB6Z1fpVEM3VspV\"]},\"/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/ISystem.sol\":{\"keccak256\":\"0x255fb1bc4466509392b0adafc4e1ba9fcfa67cfab9256eb01b86e406a862b14a\",\"license\":\"Unlicense\",\"urls\":[\"bzz-raw://7e9fee43da4bb31788f20877e30389e2216281c6fe6c7a9fb853d0a3c550931e\",\"dweb:/ipfs/QmPeepS9XU3AdpBBr6dHYo9zsiSrkep8jVMfx2whqHTKVP\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
       "version": "0.8.17+commit.8df45f5f"
@@ -48,8 +81,27 @@
         {
           "inputs": [
             {
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "OwnershipTransferred",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
               "internalType": "bytes",
-              "name": "arguments",
+              "name": "args",
               "type": "bytes"
             }
           ],
@@ -76,16 +128,47 @@
               "type": "address"
             }
           ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferOwnership"
         }
       ],
       "devdoc": {
         "kind": "dev",
-        "methods": {},
+        "methods": {
+          "owner()": {
+            "returns": {
+              "_0": "The address of the owner."
+            }
+          },
+          "transferOwnership(address)": {
+            "details": "Set _newOwner to address(0) to renounce any ownership.",
+            "params": {
+              "_newOwner": "The address of the new owner of the contract"
+            }
+          }
+        },
         "version": 1
       },
       "userdoc": {
         "kind": "user",
-        "methods": {},
+        "methods": {
+          "owner()": {
+            "notice": "Get the address of the owner"
+          },
+          "transferOwnership(address)": {
+            "notice": "Set the address of the new owner of the contract"
+          }
+        },
         "version": 1
       }
     },
@@ -122,19 +205,19 @@
       "libraries": {}
     },
     "sources": {
-      "/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/IOwned.sol": {
-        "keccak256": "0x14dd27a7fe1bdd1d17d814a40bab1886a6204ba3e45996f45cf8c6bd412e403b",
+      "/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/IERC173.sol": {
+        "keccak256": "0x90a8a25e49a0a5b34ec65d1795a374ceb6ff7a8f15ff1b22bbd669a7f9fde4ec",
         "urls": [
-          "bzz-raw://b4a5677a2bcc9159d4a90b66af9a888e33ac3cf3eae08f0b8548e9510131ec82",
-          "dweb:/ipfs/Qmdj7Jz274wP2KevSqdpFQc4msVi9jfkrNsQvCFoHNJcDG"
+          "bzz-raw://a943d58a14b9000f0f31621e247015475466f449c2e83175c4ad43607502426c",
+          "dweb:/ipfs/QmZv721wBRGHctKKprt5eDgYg89sojSNB6Z1fpVEM3VspV"
         ],
         "license": "Unlicense"
       },
       "/Users/francopetra/Projects/ethlisbon/mudbasics/node_modules/@latticexyz/solecs/src/interfaces/ISystem.sol": {
-        "keccak256": "0xb592e00cad8c4907f623e12ee8968b1a0d2d3233466616ce52908d97631f57bf",
+        "keccak256": "0x255fb1bc4466509392b0adafc4e1ba9fcfa67cfab9256eb01b86e406a862b14a",
         "urls": [
-          "bzz-raw://9eaa438a69cf74ff00986908f7b38bddf67e5848ae7fb4ef1dbbf3aad42e830a",
-          "dweb:/ipfs/QmXaho8gjkfA2yaU1kKSoP7xn8dBLGnq6QcgBEFfxh5tkU"
+          "bzz-raw://7e9fee43da4bb31788f20877e30389e2216281c6fe6c7a9fb853d0a3c550931e",
+          "dweb:/ipfs/QmPeepS9XU3AdpBBr6dHYo9zsiSrkep8jVMfx2whqHTKVP"
         ],
         "license": "Unlicense"
       }

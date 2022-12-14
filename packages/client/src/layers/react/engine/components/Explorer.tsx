@@ -1,14 +1,14 @@
-import React, {useState, useEffect, useReducer} from 'react'
+import React, { useState, useEffect } from 'react'
 import { observer } from "mobx-react-lite";
 import { Box, Text } from '@chakra-ui/react'
+import axios from 'axios';
 import { defineQuery, HasValue, getComponentValue, getComponentEntities, getComponentValueStrict } from "@latticexyz/recs";
 
-import getIPFSLink from '../../../../lib/getIPFSLink'
-
+import Audio from '../../components/Audio'
 import NavBar from '../../components/NavBar'
 import styles from './stylesDesktop.module.css'
 import { sounds } from '../constants'
-
+import { ARWEAVE_GATEWAY } from '../../../../constants'
 
 export const Explorer: React.FC = observer(({layers}) => {
   const {
@@ -23,14 +23,19 @@ export const Explorer: React.FC = observer(({layers}) => {
 const [soundList, setSoundList] = useState([])
 
 useEffect(() => {
+  
   ( async () => {
     try {
-      console.log("🚀 ~ file: Explorer.tsx:41 ~ constExplorer:React.FC=observer ~ world.entityToIndex", `${world.entityToIndex}`)
       if (world.entityToIndex.size > 0){
         const entityId = sounds[0].entityId
         const entityIndex = world.entityToIndex.get(entityId);
         console.log("🚀 =======>>>>>", entityIndex);
         const soundData = getComponentValueStrict(SoundUri, entityIndex);
+        console.log("🚀 ~ file: Explorer.tsx:32 ~ soundData", soundData)
+        const response = await axios(`${ARWEAVE_GATEWAY}/tx/${soundData}/data`, {
+          method: 'GET',
+        });
+        console.log("🚀 ~ file: Explorer.tsx:43 ~ response", response)
         setSoundList([soundData.value]);
       }
     } catch (error) {
@@ -83,8 +88,7 @@ return (
             // const src = getIPFSLink(audio.item);
             return <Box key={id}>
               {/* <Text>{item.name}</Text> */}
-              {/* <Audio src={src} isNew={true} attachments={attachments} layers={layers}  /> */}
-              <p>AAAA</p>
+              <Audio src={audio.animation_url} coverImg={audio?.coverImg} isNew={false} layers={layers}  />
               {/* TODO: Remove (Should also remove metadata on IPFS) */}
               {/* <IconButton aria-label='Remove ' as={FiTrash} /> */}
             </Box>
@@ -96,8 +100,6 @@ return (
             <Text>(Use mobile for remixing)</Text>
           </div>
           }
-        {/* TODO: Copy link to share */}
-        {/* <a>Copy</a> */}
       </div>
     </Box>
   )

@@ -1,6 +1,7 @@
 import { namespaceWorld } from "@latticexyz/recs";
 import { NetworkLayer } from "../network";
-import { createPositionSystem, createInputSystem, createUploadSoundSystem } from "./systems";
+import { createUploadSoundSystem } from "./systems";
+// import { createPositionSystem, createInputSystem } from "./systems";
 
 /**
  * The React layer is responsible for rendering the UI.

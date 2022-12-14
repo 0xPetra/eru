@@ -5,7 +5,7 @@ const accessKeyId = process.env.EVER_ACCESS_KEY as string;
 const secretAccessKey = process.env.EVER_ACCESS_SECRET as string;
 const bucketName = process.env.NEXT_PUBLIC_EVER_BUCKET_NAME as string;
 
-export default function handler(req, res) {
+  const handler = async (req, res) => {
   try {
     const stsClient = new STSClient({
       endpoint: EVER_API,
@@ -52,3 +52,5 @@ export default function handler(req, res) {
     return res.status(500).json({ success: false, message: ERROR_MESSAGE });
   }
 }
+
+export default handler;

@@ -10,13 +10,13 @@ interface AttachmentType {
   altTag: string;
 }
 
-const bucketName = process.env.NEXT_PUBLIC_EVER_BUCKET_NAME as string;
+const bucketName = import.meta.env.NEXT_PUBLIC_EVER_BUCKET_NAME as string;
 const params = {
   Bucket: bucketName,
   Key: uuid()
 };
 
-const endpoint = isDev() ? 'http://localhost:9999/.netlify/functions/token' : '/.netlify/functions/token'
+const endpoint = '/api/token'
 
 const getTokens = async () => {
   return await axios.get(endpoint);

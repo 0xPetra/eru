@@ -2,7 +2,7 @@ import getEnvConfig from './lib/getEnvConfig';
 import packageJson from '../package.json';
 
 // Environments
-export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+export const IS_PRODUCTION = import.meta.env.NODE_ENV === 'production';
 export const MAINNET_API_URL = 'https://api.eru.gg';  //TODO: Add the actual url
 
 export enum Direction {
@@ -20,7 +20,7 @@ export const Directions = {
 };
 
 // Lens Network
-export const LENS_NETWORK = process.env.NEXT_PUBLIC_LENS_NETWORK ?? 'mainnet';
+export const LENS_NETWORK = import.meta.env.VITE_NEXT_PUBLIC_LENS_NETWORK ?? 'mainnet';
 
 export const API_URL = getEnvConfig().apiEndpoint;
 // export const LENSHUB_PROXY = getEnvConfig().lensHubProxyAddress;
@@ -60,8 +60,8 @@ export const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/mpeg', 'video/ogg', 'vid
 export const ALLOWED_MEDIA_TYPES = [...ALLOWED_AUDIO_TYPES];
 
 // Leafwatch
-export const DATADOG_TOKEN = process.env.NEXT_PUBLIC_DATADOG_API_KEY ?? '';
-export const DATADOG_APPLICATION_KEY = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_KEY ?? '';
+export const DATADOG_TOKEN = import.meta.env.NEXT_PUBLIC_DATADOG_API_KEY ?? '';
+export const DATADOG_APPLICATION_KEY = import.meta.env.NEXT_PUBLIC_DATADOG_APPLICATION_KEY ?? '';
 export const LEAFWATCH_HOST = 'https://logs.browser-intake-datadoghq.eu/api/v2/logs';
 
 

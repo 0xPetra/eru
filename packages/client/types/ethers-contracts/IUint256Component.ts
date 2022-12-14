@@ -13,7 +13,7 @@ import {
   Signer,
   utils,
 } from "ethers";
-import { FunctionFragment, Result } from "@ethersproject/abi";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -29,9 +29,11 @@ export interface IUint256ComponentInterface extends utils.Interface {
     "getEntities()": FunctionFragment;
     "getEntitiesWithValue(bytes)": FunctionFragment;
     "getRawValue(uint256)": FunctionFragment;
+    "getSchema()": FunctionFragment;
     "getValue(uint256)": FunctionFragment;
     "has(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
+    "registerIndexer(address)": FunctionFragment;
     "remove(uint256)": FunctionFragment;
     "set(uint256,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
@@ -54,12 +56,17 @@ export interface IUint256ComponentInterface extends utils.Interface {
     functionFragment: "getRawValue",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "getSchema", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getValue",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "has", values: [BigNumberish]): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "registerIndexer",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "remove",
     values: [BigNumberish]
@@ -93,9 +100,14 @@ export interface IUint256ComponentInterface extends utils.Interface {
     functionFragment: "getRawValue",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getSchema", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getValue", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "has", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "registerIndexer",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "remove", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "set", data: BytesLike): Result;
   decodeFunctionResult(
@@ -107,8 +119,20 @@ export interface IUint256ComponentInterface extends utils.Interface {
     data: BytesLike
   ): Result;
 
-  events: {};
+  events: {
+    "OwnershipTransferred(address,address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string],
+  { previousOwner: string; newOwner: string }
+>;
+
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface IUint256Component extends BaseContract {
   contractName: "IUint256Component";
@@ -160,6 +184,10 @@ export interface IUint256Component extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getSchema(
+      overrides?: CallOverrides
+    ): Promise<[string[], number[]] & { keys: string[]; values: number[] }>;
+
     getValue(
       entity: BigNumberish,
       overrides?: CallOverrides
@@ -168,6 +196,11 @@ export interface IUint256Component extends BaseContract {
     has(entity: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    registerIndexer(
+      indexer: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     remove(
       entity: BigNumberish,
@@ -187,7 +220,7 @@ export interface IUint256Component extends BaseContract {
     ): Promise<ContractTransaction>;
 
     transferOwnership(
-      newOwner: string,
+      _newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -216,11 +249,20 @@ export interface IUint256Component extends BaseContract {
 
   getRawValue(entity: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+  getSchema(
+    overrides?: CallOverrides
+  ): Promise<[string[], number[]] & { keys: string[]; values: number[] }>;
+
   getValue(entity: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
   has(entity: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
+
+  registerIndexer(
+    indexer: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   remove(
     entity: BigNumberish,
@@ -240,7 +282,7 @@ export interface IUint256Component extends BaseContract {
   ): Promise<ContractTransaction>;
 
   transferOwnership(
-    newOwner: string,
+    _newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -269,6 +311,10 @@ export interface IUint256Component extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getSchema(
+      overrides?: CallOverrides
+    ): Promise<[string[], number[]] & { keys: string[]; values: number[] }>;
+
     getValue(
       entity: BigNumberish,
       overrides?: CallOverrides
@@ -277,6 +323,8 @@ export interface IUint256Component extends BaseContract {
     has(entity: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
     owner(overrides?: CallOverrides): Promise<string>;
+
+    registerIndexer(indexer: string, overrides?: CallOverrides): Promise<void>;
 
     remove(entity: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
@@ -293,14 +341,23 @@ export interface IUint256Component extends BaseContract {
     ): Promise<void>;
 
     transferOwnership(
-      newOwner: string,
+      _newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
     unauthorizeWriter(writer: string, overrides?: CallOverrides): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): OwnershipTransferredEventFilter;
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): OwnershipTransferredEventFilter;
+  };
 
   estimateGas: {
     authorizeWriter(
@@ -325,6 +382,8 @@ export interface IUint256Component extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getSchema(overrides?: CallOverrides): Promise<BigNumber>;
+
     getValue(
       entity: BigNumberish,
       overrides?: CallOverrides
@@ -333,6 +392,11 @@ export interface IUint256Component extends BaseContract {
     has(entity: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    registerIndexer(
+      indexer: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     remove(
       entity: BigNumberish,
@@ -352,7 +416,7 @@ export interface IUint256Component extends BaseContract {
     ): Promise<BigNumber>;
 
     transferOwnership(
-      newOwner: string,
+      _newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -385,6 +449,8 @@ export interface IUint256Component extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getSchema(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getValue(
       entity: BigNumberish,
       overrides?: CallOverrides
@@ -396,6 +462,11 @@ export interface IUint256Component extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    registerIndexer(
+      indexer: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     remove(
       entity: BigNumberish,
@@ -415,7 +486,7 @@ export interface IUint256Component extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     transferOwnership(
-      newOwner: string,
+      _newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

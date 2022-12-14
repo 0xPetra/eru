@@ -4,7 +4,7 @@ import { chain } from 'wagmi';
 
 
 // Lens Network
-export const LENS_NETWORK = process.env.NEXT_PUBLIC_LENS_NETWORK ?? 'mainnet';
+export const LENS_NETWORK = import.meta.env.VITE_NEXT_PUBLIC_LENS_NETWORK ?? 'mainnet';
 export const MAINNET_API_URL = 'https://api.lens.dev';
 export const TESTNET_API_URL = 'https://api-mumbai.lens.dev';
 export const STAGING_API_URL = 'https://staging-api-social-mumbai.lens.crtlkey.com';
@@ -23,16 +23,16 @@ export const XMTP_ENV = IS_MAINNET ? 'production' : 'dev';
 export const XMTP_PREFIX = 'lens.dev/dm';
 
 // Git
-export const GIT_COMMIT_SHA = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7);
+export const GIT_COMMIT_SHA = import.meta.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7);
 
 // Misc
 export const CONTACT_EMAIL = 'support@lenster.xyz';
-export const RELAY_ON = process.env.NEXT_PUBLIC_RELAY_ON === 'true';
+export const RELAY_ON = import.meta.env.VITE_NEXT_PUBLIC_RELAY_ON === 'true';
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 // Leafwatch
-export const DATADOG_TOKEN = process.env.NEXT_PUBLIC_DATADOG_API_KEY ?? '';
-export const DATADOG_APPLICATION_KEY = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_KEY ?? '';
+export const DATADOG_TOKEN = import.meta.env.NEXT_PUBLIC_DATADOG_API_KEY ?? '';
+export const DATADOG_APPLICATION_KEY = import.meta.env.NEXT_PUBLIC_DATADOG_APPLICATION_KEY ?? '';
 export const LEAFWATCH_HOST = 'https://logs.browser-intake-datadoghq.eu/api/v2/logs';
 
 

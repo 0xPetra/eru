@@ -29,7 +29,7 @@ export const Leafwatch = {
           props: options,
           url: location.href,
           referrer: document.referrer,
-          sha: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
+          sha: import.meta.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
           useragent: navigator.userAgent,
           ip
         }

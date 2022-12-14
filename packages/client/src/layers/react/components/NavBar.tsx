@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Flex,
@@ -71,7 +72,7 @@ const NavBar = ({layers}) => {
                         size={'xl'}
                         variant="circular"
                         // src={'https://avatars.dicebear.com/api/male/username.svg'}
-                        icon={<Circle>
+                        icon={
                           <Blockies
                           seed={stringAddress} 
                           size={10} 
@@ -80,7 +81,6 @@ const NavBar = ({layers}) => {
                           spotColor="#FF0080" 
                           className="identicon"
                           />
-                          </Circle>
                           }
                       />
                   </Center>

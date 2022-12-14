@@ -9,7 +9,7 @@ import { isDev } from '../utils/isDev';
  */
 const uploadToArweave = async (data: string): Promise<string> => {
 
-  const endpoint = isDev() ? 'http://localhost:9999/.netlify/functions/upload' : '/.netlify/functions/upload'
+  const endpoint = '/api/upload'
 
   try {
     const upload = await axios(endpoint, {

@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { FiPlay, FiPause } from "react-icons/fi";
 import { useFormik } from "formik";
-import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack, Text, Circle } from '@chakra-ui/react'
-import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react'
+import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack, Text } from '@chakra-ui/react'
+import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Tag } from '@chakra-ui/react'
 import { object, string } from 'zod';
 import { utils } from "ethers";
 
@@ -16,8 +16,15 @@ import uploadSound from '../../../../lib/uploadSound';
 
 import CoverImage from './CoverImage';
 import Player from './Player';
+
+type CoverType = {
+  url?: string;
+  mime: string
+}
 interface Props {
   src: string;
+  coverImg: CoverType | null;
+  setCoverImg?: (setCoverImg: CoverType) => void;
   isNew?: boolean;
   attachments?: unknown[];
   txn?: any;
@@ -29,8 +36,7 @@ export const AudioPublicationSchema = object({
   cover: string().trim().min(1, { message: 'Invalid cover image' })
 });
 
-const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }) => {
-  const [coverImg, setCoverImg] = useState(false);
+const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachments, txn= null, layers }) => {
   const [playing, setPlaying] = useState(false);
   
   const toast = useToast();
@@ -109,6 +115,89 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
     playerRef.current?.plyr.pause();
   };
 
+  const remixSound = () => {
+    // TODO: Define what remixing looks like
+    console.log('remixSound remixSound')
+  }
+
+  const SoundDetails = () => {
+    return (
+      <>
+      <Text as="h3">Titleeee</Text>
+
+      <HStack spacing='20px' justifyContent='space-around'>
+
+          <Text mb='8px'>TYPE</Text>
+          <Tag>Tag type</Tag>
+
+          <Text mb='8px'>KEY</Text>
+          <Tag>Tag KEY</Tag>
+
+          <Text mb='8px'>BPM</Text>
+          <Tag>Tag BPM</Tag>
+      </HStack>
+      </>
+    )
+  }
+
+  const NewSoundForm = () => {
+    return (     
+      <>
+      <FormControl>
+          <Input 
+            id='title'
+            variant='unstyled' 
+            placeholder='Add title' 
+            onChange={formik.handleChange}
+            value={formik.values.title}
+            my={3}
+            size='lg'
+            />
+        </FormControl>
+
+        <HStack spacing='20px' justifyContent='space-around'>
+
+          <Text mb='8px'>TYPE</Text>
+          <Select 
+            id='type'
+            placeholder='Type' 
+            size='sm'
+            onChange={formik.handleChange}
+            value={formik.values.type}
+            >
+            <option value='sound'>Sound</option>
+            <option value='beat'>Beat</option>
+            <option value='track'>Track</option>
+            <option value='song'>Song</option>
+          </Select>
+
+          <Text mb='8px'>KEY</Text>
+          <Select 
+            id='key'
+            placeholder='Key' 
+            size='sm'
+            onChange={formik.handleChange}
+            value={formik.values.key}
+            >
+            <option value='G'>G</option>
+            <option value='C'>C</option>
+            <option value='F'>F</option>
+          </Select>
+
+          <Text mb='8px'>BPM</Text>
+          <NumberInput size='sm' variant='outline'>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+
+        </HStack>
+      </>
+    )
+  }
+
   return (
       <Card
         my={20}
@@ -159,58 +248,11 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
                 />
                 )}
               <Box>
-                <FormControl>
-                  <Input 
-                    id='title'
-                    variant='unstyled' 
-                    placeholder='Add title' 
-                    onChange={formik.handleChange}
-                    value={formik.values.title}
-                    my={3}
-                    size='lg'
-                    />
-                </FormControl>
-
-                <HStack spacing='24px' justifyContent='space-around'>
-
-                  <Text mb='8px'>TYPE</Text>
-                  <Select 
-                    id='type'
-                    placeholder='Type' 
-                    size='sm'
-                    onChange={formik.handleChange}
-                    value={formik.values.type}
-                    >
-                    <option value='sound'>Sound</option>
-                    <option value='beat'>Beat</option>
-                    <option value='track'>Track</option>
-                    <option value='song'>Song</option>
-                  </Select>
-
-                  <Text mb='8px'>KEY</Text>
-                  <Select 
-                    id='key'
-                    placeholder='Key' 
-                    size='sm'
-                    onChange={formik.handleChange}
-                    value={formik.values.key}
-                    >
-                    <option value='G'>G</option>
-                    <option value='C'>C</option>
-                    <option value='F'>F</option>
-                  </Select>
-
-                  <Text mb='8px'>BPM</Text>
-                  <NumberInput size='sm' variant='outline'>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-
-                </HStack>
-
+                {isNew ? 
+                <NewSoundForm />
+                :
+                <SoundDetails />
+                }
               </Box>
 
             </HStack>
@@ -219,7 +261,8 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
             <Player src={src} playerRef={playerRef} />
           </div>
           <CardFooter justify="center">
-            <Button 
+          {isNew ?
+          <Button 
               type='submit'
               variant='solid' 
               disabled={!isMintEnabled}
@@ -231,6 +274,19 @@ const Audio: FC<Props> = ({ src, isNew = false, attachments, txn= null, layers }
             >
               Mint Sound
             </Button>
+            :
+          <Button 
+              onClick={remixSound}
+              variant='solid' 
+              maxW={80} 
+              bgGradient="linear(to-br, #553C9A , #FF0080)"
+              _hover={{
+                bgGradient: 'linear(to-r, red.500, yellow.500)',
+              }}
+            >
+              Remix Sound
+            </Button>
+            }
           </CardFooter>
         </form>
         </Stack>

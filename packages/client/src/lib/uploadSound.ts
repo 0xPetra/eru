@@ -41,8 +41,7 @@ const uploadSound = async (attachments, coverImg, formData, connectedAddress) =>
     // TODO: Add address
     external_url: `https://eru.gg/${connectedAddress}`,
     // external_url: `https://eru.gg/${currentProfile?.handle}`,
-    image: coverImg.item,
-    imageMimeType: coverImg.mime,
+    coverImg,
     name: formData.title,
     type: formData.type,
     key: formData.key,

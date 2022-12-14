@@ -9,9 +9,6 @@ import { Layers } from "./types";
 import { Engine as EngineImport } from "./layers/react/engine/Engine";
 import { registerUIComponents as registerUIComponentsImport } from "./layers/react/components";
 import { Wallet } from "ethers";
-import * as dotenv from 'dotenv' 
-
-dotenv.config();
 
 import { isDev } from './utils/isDev';
 
@@ -59,7 +56,7 @@ async function bootGame() {
       devMode = isDev();
       initialBlockNumberString = undefined;
       initialBlockNumber = '14752190';
-      privateKey = process.env.PRIVATE_KEY;
+      privateKey = import.meta.env.PRIVATE_KEY;
     }
 
     if (!privateKey) {

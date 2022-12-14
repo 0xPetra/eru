@@ -13,6 +13,7 @@ import styles from './stylesDesktop.module.css'
 
 export const DesktopWindow: React.FC = observer(({layers}) => {
   const [attachments, setAttachments] = useState([]);
+  const [coverImg, setCoverImg] = useState(null);
   
 return (  
     <Box width="100%" height="100%" className={styles.desktop}>
@@ -26,7 +27,7 @@ return (
             const src = getIPFSLink(audio.item);
             return <Box key={id}>
               {/* <Text>{item.name}</Text> */}
-              <Audio src={src} isNew={true} attachments={attachments} layers={layers}  />
+              <Audio src={src} coverImg={coverImg} setCoverImg={setCoverImg} isNew={true} attachments={attachments} layers={layers}  />
               {/* TODO: Remove (Should also remove metadata on IPFS) */}
               {/* <IconButton aria-label='Remove ' as={FiTrash} /> */}
             </Box>

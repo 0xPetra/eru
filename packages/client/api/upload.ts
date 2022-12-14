@@ -3,7 +3,7 @@ import { APP_NAME, BUNDLR_CURRENCY, BUNDLR_NODE_URL, ERROR_MESSAGE } from '../co
 
 const bundlrpk = process.env.BUNDLR_PRIVATE_KEY as string;
 
-export default function handler(req, res) {
+const handler = async (req, res) => {
     // Only allow POST
     if (req.method !== 'POST') {
       return res.status(405).json({ success: false, message: 'Invalid method!' });
@@ -31,3 +31,5 @@ export default function handler(req, res) {
       return res.status(500).json({ success: false, message: ERROR_MESSAGE + " " + error });
     }
 }
+
+export default handler;

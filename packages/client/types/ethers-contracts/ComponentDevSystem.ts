@@ -13,7 +13,7 @@ import {
   Signer,
   utils,
 } from "ethers";
-import { FunctionFragment, Result } from "@ethersproject/abi";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -29,6 +29,7 @@ export interface ComponentDevSystemInterface extends utils.Interface {
     "executeTyped(uint256,uint256,bytes)": FunctionFragment;
     "owner()": FunctionFragment;
     "requirement(bytes)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "execute", values: [BytesLike]): string;
@@ -41,6 +42,10 @@ export interface ComponentDevSystemInterface extends utils.Interface {
     functionFragment: "requirement",
     values: [BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
 
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
@@ -52,9 +57,25 @@ export interface ComponentDevSystemInterface extends utils.Interface {
     functionFragment: "requirement",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
 
-  events: {};
+  events: {
+    "OwnershipTransferred(address,address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string],
+  { previousOwner: string; newOwner: string }
+>;
+
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface ComponentDevSystem extends BaseContract {
   contractName: "ComponentDevSystem";
@@ -99,6 +120,11 @@ export interface ComponentDevSystem extends BaseContract {
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     requirement(arg0: BytesLike, overrides?: CallOverrides): Promise<[string]>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   execute(
@@ -117,6 +143,11 @@ export interface ComponentDevSystem extends BaseContract {
 
   requirement(arg0: BytesLike, overrides?: CallOverrides): Promise<string>;
 
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     execute(arguments: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -130,9 +161,23 @@ export interface ComponentDevSystem extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
 
     requirement(arg0: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): OwnershipTransferredEventFilter;
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): OwnershipTransferredEventFilter;
+  };
 
   estimateGas: {
     execute(
@@ -150,6 +195,11 @@ export interface ComponentDevSystem extends BaseContract {
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     requirement(arg0: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -170,6 +220,11 @@ export interface ComponentDevSystem extends BaseContract {
     requirement(
       arg0: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

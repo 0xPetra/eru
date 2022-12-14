@@ -70,3 +70,8 @@ body {
   div[data-lexical-editor='true'] {
     @apply outline-none;
   } */
+
+  .identicon {
+    border-radius: 100px;
+    border: 2px solid;
+  }

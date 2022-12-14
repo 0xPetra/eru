@@ -11,6 +11,25 @@ import type {
 
 const _abi = [
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -94,6 +113,24 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getSchema",
+    outputs: [
+      {
+        internalType: "string[]",
+        name: "keys",
+        type: "string[]",
+      },
+      {
+        internalType: "enum LibTypes.SchemaValue[]",
+        name: "values",
+        type: "uint8[]",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -142,6 +179,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "indexer",
+        type: "address",
+      },
+    ],
+    name: "registerIndexer",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -197,7 +247,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "newOwner",
+        name: "_newOwner",
         type: "address",
       },
     ],

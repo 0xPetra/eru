@@ -13,12 +13,11 @@ import imageProxy from '../../../../lib/imageProxy';
 interface Props {
   isNew: boolean;
   cover: string;
-  setCover: (url: string, mimeType: string) => void;
+  setCover: (url: string, mime: string) => void;
   imageRef: Ref<HTMLImageElement>;
 }
 
 const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => {
-  console.log("🚀 ~ file: CoverImage.tsx:22 ~ cover", cover)
   const [isUploading, setIsUploading] = useState(false);
   const toast = useToast();
 
@@ -49,7 +48,7 @@ const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => 
             :
             <Image
               objectFit='cover'
-              src={cover ? imageProxy(getIPFSLink(cover[0].item)) : cover}
+              src={cover ? imageProxy(getIPFSLink(cover.item)) : cover.item}
               alt='Sound cover Image'
               ref={imageRef}
               width="auto"
