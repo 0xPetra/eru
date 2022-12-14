@@ -21,12 +21,17 @@ type CoverType = {
   url?: string;
   mime: string
 }
+
+type AudioType = {
+  item?: string;
+  mime: string
+}
 interface Props {
   src: string;
   coverImg: CoverType | null;
   setCoverImg?: (setCoverImg: CoverType) => void;
   isNew?: boolean;
-  attachments?: unknown[];
+  audio?: AudioType;
   txn?: any;
   layers: any
 }
@@ -36,7 +41,7 @@ export const AudioPublicationSchema = object({
   cover: string().trim().min(1, { message: 'Invalid cover image' })
 });
 
-const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachments, txn= null, layers }) => {
+const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, audio, txn= null, layers }) => {
   const [playing, setPlaying] = useState(false);
   
   const toast = useToast();
@@ -69,7 +74,7 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachmen
   const publishSound = async (values) => {
     try {
       // TODO: Spinner/Loading
-      const arweaveId = await uploadSound(attachments, coverImg, values, connectedAddress);
+      const arweaveId = await uploadSound(audio, coverImg, values, connectedAddress);
       console.log("🚀 ~ file: index.tsx:68 ~ publishSound ~ arweaveId", arweaveId)
       // const id = crypto.randomBytes(32).toString('hex');
       // const pk = "0x"+id;
@@ -102,7 +107,6 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachmen
   // TODO: Add sound attached to coverImg
   const isMintEnabled = formik.values.title && coverImg;
 
-  console.log("🚀 ~ file: index.tsx:46 ~ handlePlayPause ~ playerRef.current?.plyr", playerRef.current?.plyr)
   const handlePlayPause = () => {
     if (!playerRef.current) {
       return;
@@ -120,8 +124,7 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachmen
     console.log('remixSound remixSound')
   }
 
-  const SoundDetails = () => {
-    return (
+  const SoundDetails = (
       <>
       <Text as="h3">Titleeee</Text>
 
@@ -138,10 +141,8 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachmen
       </HStack>
       </>
     )
-  }
 
-  const NewSoundForm = () => {
-    return (     
+  const NewSoundForm = (     
       <>
       <FormControl>
           <Input 
@@ -196,7 +197,6 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachmen
         </HStack>
       </>
     )
-  }
 
   return (
       <Card
@@ -262,16 +262,16 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, attachmen
           </div>
           <CardFooter justify="center">
           {isNew ?
-          <Button 
-              type='submit'
-              variant='solid' 
-              disabled={!isMintEnabled}
-              maxW={80} 
-              bgGradient="linear(to-br, #553C9A , #FF0080)"
-              _hover={{
-                bgGradient: 'linear(to-r, red.500, yellow.500)',
-              }}
-            >
+            <Button
+                type='submit'
+                variant='solid' 
+                disabled={!isMintEnabled}
+                maxW={80} 
+                bgGradient="linear(to-br, #553C9A , #FF0080)"
+                _hover={{
+                  bgGradient: 'linear(to-r, red.500, yellow.500)',
+                }}
+              >
               Mint Sound
             </Button>
             :

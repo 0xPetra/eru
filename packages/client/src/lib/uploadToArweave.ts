@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { ERROR_MESSAGE } from '../constants';
-import { isDev } from '../utils/isDev';
 
 /**
  *

@@ -23,7 +23,6 @@ export const Explorer: React.FC = observer(({layers}) => {
 const [soundList, setSoundList] = useState([])
 
 useEffect(() => {
-  
   ( async () => {
     try {
       if (world.entityToIndex.size > 0){

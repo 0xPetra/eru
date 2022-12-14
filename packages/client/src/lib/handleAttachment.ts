@@ -13,10 +13,10 @@ const handleAttachment = async (files: string | unknown[], setIsUploading, setAt
     setIsUploading(true);
     try {
       // Count check
-      if (files && (files.length > 4)) {
+      if (files && (files.length > 1)) {
         toast({
           title: 'Error',
-          description: "Please choose less than 4 audio files.",
+          description: "Please choose one file.",
           status: 'error',
           duration: 9000,
           isClosable: true,
@@ -28,9 +28,8 @@ const handleAttachment = async (files: string | unknown[], setIsUploading, setAt
       if (isTypeAllowed(files)) {
         try {
           const attachment = await uploadToIPFS(files);
-          console.log("🚀 ~ file: DropZone.tsx:57 ~ handleAttachment ~ attachment", attachment)
-          if (attachment) {
-            setAttachments(attachment);
+          if (attachment[0]) {
+            setAttachments(attachment[0]);
           }
         } catch (error) {
           console.error("🚀 ~ error", error)

@@ -3,14 +3,13 @@ import axios from 'axios';
 import { EVER_API } from '../constants';
 import { v4 as uuid } from 'uuid';
 
-import { isDev } from '../utils/isDev';
 interface AttachmentType {
   item: string;
   type: string;
   altTag: string;
 }
 
-const bucketName = import.meta.env.NEXT_PUBLIC_EVER_BUCKET_NAME as string;
+const bucketName = import.meta.env.VITE_PUBLIC_EVER_BUCKET_NAME as string;
 const params = {
   Bucket: bucketName,
   Key: uuid()
@@ -28,9 +27,9 @@ const getS3Client = async () => {
   const client = new S3({
     endpoint: EVER_API,
     credentials: {
-      accessKeyId: tokens.data?.accessKeyId,
-      secretAccessKey: tokens.data?.secretAccessKey,
-      sessionToken: tokens.data?.sessionToken
+      accessKeyId: tokens.data?.body?.accessKeyId,
+      secretAccessKey: tokens.data?.body?.secretAccessKey,
+      sessionToken: tokens.data?.body?.sessionToken
     },
     region: 'us-west-2',
     maxAttempts: 3
@@ -39,7 +38,7 @@ const getS3Client = async () => {
     return client;
   } catch (error) {
     // toast
-    console.error("You might need to run 'yarn netlify functions:serve' to run serverless functions localy")
+    console.error("You might need to run serverless functions localy")
     console.error(error)
   }
 };
@@ -58,7 +57,6 @@ const uploadToIPFS = async (data: any): Promise<AttachmentType[]> => {
         await client?.putObject({ ...params, Body: file, ContentType: file.type });
         const result = await client?.headObject(params);
         const metadata = result?.Metadata;
-
         return {
           item: `ipfs://${metadata?.['ipfs-hash']}`,
           type: file.type || 'image/jpeg',

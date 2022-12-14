@@ -3,6 +3,8 @@ import { APP_NAME, BUNDLR_CURRENCY, BUNDLR_NODE_URL, ERROR_MESSAGE } from '../co
 
 const bundlrpk = process.env.BUNDLR_PRIVATE_KEY as string;
 
+ // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ // @ts-ignore
 const handler = async (req, res) => {
     // Only allow POST
     if (req.method !== 'POST') {

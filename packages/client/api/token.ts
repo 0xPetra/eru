@@ -3,8 +3,10 @@ import { ERROR_MESSAGE, EVER_API } from '../constants';
 
 const accessKeyId = process.env.EVER_ACCESS_KEY as string;
 const secretAccessKey = process.env.EVER_ACCESS_SECRET as string;
-const bucketName = process.env.NEXT_PUBLIC_EVER_BUCKET_NAME as string;
+const bucketName = process.env.VITE_PUBLIC_EVER_BUCKET_NAME as string;
 
+ // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ // @ts-ignore
   const handler = async (req, res) => {
   try {
     const stsClient = new STSClient({

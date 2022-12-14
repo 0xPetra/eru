@@ -7,18 +7,18 @@ import handleAttachment from '../../../lib/handleAttachment';
 
 import styles from '../engine/components/stylesDesktop.module.css'
 
-const DropZone = ({setAttachments}) => {
+const DropZone = ({setAudio}) => {
   const [isUploading, setIsUploading] = useState(false)
   const toast = useToast()
 
   const onDrop = useCallback(async acceptedFiles => {
-    handleAttachment(acceptedFiles, setIsUploading, setAttachments, ALLOWED_MEDIA_TYPES, toast);
+    handleAttachment(acceptedFiles, setIsUploading, setAudio, ALLOWED_MEDIA_TYPES, toast);
     const publicationContent = {
       audio: acceptedFiles[0]
     }
   }, [])
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, accept: { "audio/mpeg": ALLOWED_MEDIA_TYPES }})
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, accept: { "audio/*": ALLOWED_MEDIA_TYPES }})
 
     
 return (
