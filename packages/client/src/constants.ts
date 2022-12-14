@@ -2,7 +2,7 @@ import getEnvConfig from './lib/getEnvConfig';
 import packageJson from '../package.json';
 
 // Environments
-export const IS_PRODUCTION = import.meta.env.NODE_ENV === 'production';
+export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 export const MAINNET_API_URL = 'https://api.eru.gg';  //TODO: Add the actual url
 
 export enum Direction {
