@@ -14,7 +14,6 @@ import {
   Stack,
   Avatar,
   MenuDivider,
-  Circle
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon, Icon } from '@chakra-ui/icons';
 import { FiUser, FiCopy, FiMusic } from "react-icons/fi";
@@ -48,9 +47,9 @@ const NavBar = ({layers}) => {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button onClick={toggleColorMode}>
+              {/* <Button onClick={toggleColorMode}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-              </Button>
+              </Button> */}
 
               <Menu>
                 <MenuButton

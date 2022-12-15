@@ -9,7 +9,7 @@ interface AttachmentType {
   altTag: string;
 }
 
-const bucketName = import.meta.env.VITE_PUBLIC_EVER_BUCKET_NAME as string;
+const bucketName = import.meta.env?.VITE_PUBLIC_EVER_BUCKET_NAME ?? 'eru-staging' as string;
 const params = {
   Bucket: bucketName,
   Key: uuid()

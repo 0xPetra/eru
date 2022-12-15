@@ -24,7 +24,7 @@ return (
         {audio ? 
             <Box>
               {/* <Text>{item.name}</Text> */}
-              <Audio src={getIPFSLink(audio?.item)} coverImg={coverImg} setCoverImg={setCoverImg} isNew={true} audio={audio} layers={layers}  />
+              <Audio src={getIPFSLink(audio?.item)} setAudio={setAudio} coverImg={coverImg} setCoverImg={setCoverImg} isNew={true} audio={audio} layers={layers}  />
               {/* TODO: Remove (Should also remove metadata on IPFS) */}
               {/* <IconButton aria-label='Remove ' as={FiTrash} /> */}
             </Box>

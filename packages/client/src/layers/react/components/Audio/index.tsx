@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { FiPlay, FiPause } from "react-icons/fi";
 import { useFormik } from "formik";
-import { Input, FormControl, Select, useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack, Text } from '@chakra-ui/react'
-import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Tag } from '@chakra-ui/react'
+import { useToast, Button, IconButton, Stack, Card, Box, CardBody, CardFooter, HStack, Text, Tag } from '@chakra-ui/react'
 import { object, string } from 'zod';
 import { utils } from "ethers";
 
@@ -14,6 +13,8 @@ import type { APITypes } from 'plyr-react';
 import getThumbnailUrl from '../../../../lib/getThumbnailUrl';
 import uploadSound from '../../../../lib/uploadSound';
 
+import SoundDetails from './SoundDetails'
+import NewSoundForm from './NewSoundForm'
 import CoverImage from './CoverImage';
 import Player from './Player';
 
@@ -28,8 +29,9 @@ type AudioType = {
 }
 interface Props {
   src: string;
+  setAudio?: (setCoverImg: AudioType | null) => void;
   coverImg: CoverType | null;
-  setCoverImg?: (setCoverImg: CoverType) => void;
+  setCoverImg?: (setCoverImg: CoverType | null) => void;
   isNew?: boolean;
   audio?: AudioType;
   txn?: any;
@@ -41,7 +43,7 @@ export const AudioPublicationSchema = object({
   cover: string().trim().min(1, { message: 'Invalid cover image' })
 });
 
-const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, audio, txn= null, layers }) => {
+const Audio: FC<Props> = ({ src, setAudio, coverImg, setCoverImg, isNew = false, audio, txn= null, layers }) => {
   const [playing, setPlaying] = useState(false);
   
   const toast = useToast();
@@ -85,14 +87,15 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, audio, tx
       layers.network.api.uploadSound(entitiId, arweaveId)
       toast({
         title: 'Success',
-        description: "Please choose less than 4 audio files.",
+        description: "Sound saved.",
         status: 'success',
         duration: 9000,
         isClosable: true,
       })
       setCoverImg(null);
+      setAudio(null);
       formik.resetForm();
-    }catch (error) {
+    } catch (error) {
       console.log("🚀 ~ file: index.tsx:87 ~ publishSound ~ error", error)
       toast({
         title: 'Error',
@@ -123,80 +126,6 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, audio, tx
     // TODO: Define what remixing looks like
     console.log('remixSound remixSound')
   }
-
-  const SoundDetails = (
-      <>
-      <Text as="h3">Titleeee</Text>
-
-      <HStack spacing='20px' justifyContent='space-around'>
-
-          <Text mb='8px'>TYPE</Text>
-          <Tag>Tag type</Tag>
-
-          <Text mb='8px'>KEY</Text>
-          <Tag>Tag KEY</Tag>
-
-          <Text mb='8px'>BPM</Text>
-          <Tag>Tag BPM</Tag>
-      </HStack>
-      </>
-    )
-
-  const NewSoundForm = (     
-      <>
-      <FormControl>
-          <Input 
-            id='title'
-            variant='unstyled' 
-            placeholder='Add title' 
-            onChange={formik.handleChange}
-            value={formik.values.title}
-            my={3}
-            size='lg'
-            />
-        </FormControl>
-
-        <HStack spacing='20px' justifyContent='space-around'>
-
-          <Text mb='8px'>TYPE</Text>
-          <Select 
-            id='type'
-            placeholder='Type' 
-            size='sm'
-            onChange={formik.handleChange}
-            value={formik.values.type}
-            >
-            <option value='sound'>Sound</option>
-            <option value='beat'>Beat</option>
-            <option value='track'>Track</option>
-            <option value='song'>Song</option>
-          </Select>
-
-          <Text mb='8px'>KEY</Text>
-          <Select 
-            id='key'
-            placeholder='Key' 
-            size='sm'
-            onChange={formik.handleChange}
-            value={formik.values.key}
-            >
-            <option value='G'>G</option>
-            <option value='C'>C</option>
-            <option value='F'>F</option>
-          </Select>
-
-          <Text mb='8px'>BPM</Text>
-          <NumberInput size='sm' variant='outline'>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-
-        </HStack>
-      </>
-    )
 
   return (
       <Card
@@ -249,7 +178,7 @@ const Audio: FC<Props> = ({ src, coverImg, setCoverImg, isNew = false, audio, tx
                 )}
               <Box>
                 {isNew ? 
-                <NewSoundForm />
+                <NewSoundForm formik={formik} />
                 :
                 <SoundDetails />
                 }

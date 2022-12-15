@@ -51,6 +51,7 @@ export async function createNetworkLayer(config: GameConfig) {
   }
 
   function uploadSound(entityId: string, soundUri: string) {
+    console.log("🚀 ~ file: createNetworkLayer.ts:55 ~ uploadSound ~ systems", systems)
     systems["system.UploadSound"].executeTyped(BigNumber.from(entityId), soundUri);
   }
 

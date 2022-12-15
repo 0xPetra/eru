@@ -57,7 +57,7 @@ async function bootGame() {
       devMode = isDev();
       initialBlockNumberString = undefined;
       initialBlockNumber = 14752190;
-      privateKey = import.meta.env.PRIVATE_KEY;
+      privateKey = import.meta.env?.PRIVATE_KEY;
     }
 
     if (!privateKey) {
