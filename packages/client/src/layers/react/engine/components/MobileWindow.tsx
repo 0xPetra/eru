@@ -10,10 +10,7 @@ import { Midi } from '@tonejs/midi'
 import { map } from "rxjs";
 
 import styles from './styles.module.css'
-import { sounds } from '../constants'
 import {ListIcon, PlayIcon, PadIcon} from '../../components/Icons';
-
-const baseUrl = ""
 
 const player = new Tone.Player({
   url: "https://tonejs.github.io/audio/drum-samples/loops/ominous.mp3",
@@ -39,55 +36,6 @@ export const MobileWindow: React.FC = observer(({ layers }) => {
       network: { connectedAddress },
     },
   } = layers;
-
-  useEffect(() => {
-    // declare the data fetching function
-    const fetchData = async () => {
-
-      // =====================================
-      // return query.update$.pipe(map(() => ({ matching: query.matching, world })));
-      
-      // This way we can "hear" changes related to a component (?)
-      // const componentId = '0x7777b33884e1d056a8ca979833d686abd267f9f8';
-      // const query = defineQuery([HasValue(SoundUri, { value: componentId })]);
-      // console.log("🚀 =======>>>>>", SoundUri.update$.pipe(map(() => ({ matching: query.matching, world }))))
-      // // console.log("🚀 =======>>>>>", query.update$.pipe(map(() => ({ matching: query.matching, world }))))
-
-      try {
-        const entityId = sounds[0].entityId
-        const entityIndex = SoundUri.world.entityToIndex.get(entityId);
-        console.log("🚀 =======>>>>>", entityIndex);
-        const soundData = getComponentValueStrict(SoundUri, entityIndex);
-        console.log("🚀 ~ file: MobileWindow.tsx ~ line 88 ~ fetchData ~ soundData", soundData.value)
-        
-
-      // console.log("🚀 ~ file: MobileWindow.tsx ~ line 79 ~ fetchData ~ jsonMidi", jsonMidi)
-
-        // =====================================
-      // const componentEntities = getComponentEntities(SoundUri);
-      // console.log("🚀 ~ file: MobileWindow.tsx ~ line 88 ~ fetchData ~ componentEntities", componentEntities)
-      // const currentSound = getComponentValue(SoundUri, '0x7777b33884e1d056a8ca979833d686abd267f9f8');
-      // console.log("🚀 currentSound:", currentSound)
-
-
-      // const eee = [...getComponentEntities(SoundUri)].map((e) => {
-      //   const soundData = getComponentValueStrict(SoundUri, e);
-      //   console.log('soundData', e, '-', soundData)
-      // })
-
-      } catch {
-        console.error('MobileWindow Errorrr:"')
-      }
-
-    }
-
-    // call the function
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);
-  }, [])
-
-
 
   const [style, api] = useSpring(() => ({ x: 0, y: 0, scale: 1 }))
   const bind = useDrag(({ active, movement: [x, y] }) => {
