@@ -8,6 +8,7 @@ const bucketName = process.env.VITE_PUBLIC_EVER_BUCKET_NAME as string;
  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
  // @ts-ignore
   const handler = async (req, res) => {
+    console.log("🚀 ~ file: token.ts:16 ~ handler ~  accessKeyId, secretAccessKey",  accessKeyId, bucketName, secretAccessKey)
   try {
     const stsClient = new STSClient({
       endpoint: EVER_API,

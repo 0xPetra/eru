@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from "mobx-react-lite";
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Text, Button, LinkOverlay } from '@chakra-ui/react'
 import axios from 'axios';
 import { defineQuery, getComponentValueStrict } from "@latticexyz/recs";
 
@@ -67,6 +67,20 @@ return (
           :
           <div>
             <Text mt={10} fontSize='2em'>Nothing to show</Text>
+            <LinkOverlay href='create'>
+                <Button 
+                    leftIcon={<FiMusic />}
+                    type='submit'
+                    variant='solid' 
+                    maxW={80} 
+                    bgGradient="linear(to-br, #553C9A , #FF0080)"
+                    _hover={{
+                      bgGradient: 'linear(to-r, red.500, yellow.500)',
+                    }}
+                    >
+                    Add Music
+                </Button>
+                </LinkOverlay>
           </div>
           }
       </div>

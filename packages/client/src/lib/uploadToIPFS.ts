@@ -18,7 +18,12 @@ const params = {
 const endpoint = '/api/token'
 
 const getTokens = async () => {
-  return await axios.get(endpoint);
+  const response = await axios.get(endpoint);
+  if (response) {
+    return response;
+  } else {
+    throw new Error(response?.message ?? "Error uploading file.");
+  }
 }
 
 const getS3Client = async () => {
