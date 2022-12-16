@@ -32,9 +32,7 @@ export const Engine: React.FC<{
   const router = createBrowserRouter([
     {
       path: "/",
-      // element: <Explorer layers={layers} />,
       element: <Explorer layers={layers} />,
-      // loader: BootScreen,
       errorElement: <ErrorPage />,
       // children: [
         //   {

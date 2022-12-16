@@ -1,7 +1,7 @@
 import Bundlr from '@bundlr-network/client';
 import { APP_NAME, BUNDLR_CURRENCY, BUNDLR_NODE_URL, ERROR_MESSAGE } from '../constants';
 
-const bundlrpk = process.env?.BUNDLR_PRIVATE_KEY as string;
+const bundlrpk = process.env?.VITE_BUNDLR_PRIVATE_KEY as string;
 
  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
  // @ts-ignore

@@ -36,7 +36,6 @@ return (
             <DropZone setAudio={setAudio} />
           </div>
           }
-        <Text>(Use mobile for remixing)</Text>
         {/* TODO: Copy link to share */}
         {/* <a>Copy</a> */}
       </div>

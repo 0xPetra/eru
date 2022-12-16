@@ -55,9 +55,9 @@ async function bootGame() {
       wsRpc = isDev() ? 'ws://localhost:8545' : 'wss://follower.super-degen-chain.lattice.xyz';
       checkpointUrl = params.get("checkpoint") || undefined;
       devMode = isDev();
-      initialBlockNumberString = undefined;
-      initialBlockNumber = 14752190;
-      privateKey = import.meta.env?.PRIVATE_KEY;
+      initialBlockNumberString = '';
+      initialBlockNumber = initialBlockNumberString ? parseInt(initialBlockNumberString) : 0;
+      privateKey = import.meta.env?.VITE_PRIVATE_KEY;
     }
 
     if (!privateKey) {
