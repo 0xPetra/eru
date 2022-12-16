@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Box, Text, Button, LinkOverlay } from '@chakra-ui/react'
 import axios from 'axios';
 import { defineQuery, getComponentValueStrict } from "@latticexyz/recs";
+import { FiMusic } from "react-icons/fi";
 
 import Audio from '../../components/Audio'
 import NavBar from '../../components/NavBar'
