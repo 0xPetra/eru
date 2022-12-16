@@ -6,7 +6,7 @@ import { Time } from "./utils/time";
 import { createNetworkLayer as createNetworkLayerImport } from "./layers/network";
 import { createReactLayer as createReactLayerImport } from "./layers/react";
 import { Layers } from "./types";
-import { Engine as EngineImport } from "./layers/react/engine/Engine";
+import { App as AppImport } from "./layers/react/engine/App";
 import { registerUIComponents as registerUIComponentsImport } from "./layers/react/components";
 import { Wallet } from "ethers";
 
@@ -17,7 +17,7 @@ import { isDev } from './utils/isDev';
 let createNetworkLayer = createNetworkLayerImport;
 let createReactLayer = createReactLayerImport;
 let registerUIComponents = registerUIComponentsImport;
-let Engine = EngineImport;
+let App = AppImport;
 
 /**
  * This function is called once when the game boots up.
@@ -159,18 +159,19 @@ function bootReact() {
 
   const root = ReactDOM.createRoot(rootElement);
 
-  function renderEngine() {
-    root.render(<Engine setLayers={setLayers} mountReact={mountReact} />);
+  function renderApp() {
+    root.render(<App setLayers={setLayers} mountReact={mountReact} />);
   }
 
-  renderEngine();
+  renderApp();
   registerUIComponents();
 
   if (import.meta.hot) {
-    // HMR React engine
-    import.meta.hot.accept("./layers/Renderer/React/engine/Engine.tsx", async (module) => {
-      Engine = module?.Engine;
-      renderEngine();
+    console.log("🚀 ~ file: boot.tsx:170 ~ bootReact ~ import.meta.hot", import.meta.hot)
+    // HMR React App
+    import.meta.hot.accept("./layers/Renderer/React/engine/App.tsx", async (module) => {
+      App = module?.App;
+      renderApp();
     });
   }
 

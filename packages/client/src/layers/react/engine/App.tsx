@@ -14,7 +14,7 @@ import {
 import { BrowserView, MobileView } from 'react-device-detect';
 import theme from './theme'
 
-export const Engine: React.FC<{
+export const App: React.FC<{
   setLayers: { current: (layers: Layers) => void };
   mountReact: { current: (mount: boolean) => void };
   customBootScreen?: React.ReactElement;
