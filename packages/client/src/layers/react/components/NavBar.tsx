@@ -15,11 +15,12 @@ import {
   Avatar,
   MenuDivider,
 } from '@chakra-ui/react';
-import { MoonIcon, SunIcon, Icon } from '@chakra-ui/icons';
-import { FiUser, FiCopy, FiMusic } from "react-icons/fi";
+import { Icon } from '@chakra-ui/icons';
+import { FiUser, FiCopy } from "react-icons/fi";
 import Blockies from 'react-blockies';
 
 import formatAddress from '../../../lib/formatAddress'
+import CustomBtn from '../components/CustomBtn'
 
 const NavBar = ({layers}) => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -94,23 +95,7 @@ const NavBar = ({layers}) => {
                   {/* <MenuItem>Logout</MenuItem> */}
                 </MenuList>
               </Menu>
-              {location.pathname == "/" && <LinkBox>
-              <LinkOverlay href='create'>
-                <Button 
-                    leftIcon={<FiMusic />}
-                    type='submit'
-                    variant='solid' 
-                    maxW={80} 
-                    bgGradient="linear(to-br, #553C9A , #FF0080)"
-                    _hover={{
-                      bgGradient: 'linear(to-r, red.500, yellow.500)',
-                    }}
-                    >
-                    Add Music
-                </Button>
-                </LinkOverlay>
-                    </LinkBox>
-                }
+              {location.pathname == "/" && <CustomBtn href="create" text="Add Music" />}
             </Stack>
           </Flex>
         </Flex>
