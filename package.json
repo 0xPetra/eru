@@ -42,7 +42,7 @@
     "foundryup": "curl -L https://foundry.paradigm.xyz | bash && exec \"$SHELL\" && foundryup",
     "start": "run-pty % yarn start:contracts % yarn start:client",
     "start:vercel": "yarn vercel dev",
-    "start:client": "yarn workspace ri-client run start",
+    "start:client": "yarn workspace ri-client run start:eru",
     "build": "yarn workspace ri-client build",
     "start:ngrok": "yarn workspace ri-client run ngrok",
     "start:contracts": "yarn workspace contracts run start",

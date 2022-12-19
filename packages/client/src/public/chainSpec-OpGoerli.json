@@ -1,0 +1,15 @@
+{
+  "chainSpec": "chainSpec-OpGoerli.json",
+  "deployClient": false,
+  "clientUrl": null,
+  "reuseComponents": false,
+  "upgradeSystems": false,
+  "chainBlockTime": 1,
+  "chainGasLimit": 100000000,
+  "chainId": 420,
+  "rpc": "https://opt-goerli.g.alchemy.com/v2/XswyM19Ae__orVE0n07xF7R-x1UdCQKU",
+  "wsRpc": "wss://opt-goerli.g.alchemy.com/v2/XswyM19Ae__orVE0n07xF7R-x1UdCQKU",
+  "codespace": null,
+  "dry": null,
+  "world": null
+}

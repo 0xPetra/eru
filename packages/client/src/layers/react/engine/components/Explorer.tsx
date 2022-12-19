@@ -17,9 +17,14 @@ export const Explorer: React.FC = observer(({layers}) => {
       components: { SoundUri }
     },
   } = layers;
+  
+const formattedResponse = JSON.parse("{\"version\":\"2.0.0\",\"metadata_id\":\"477a3c24-4860-462d-992d-3d567797021f\",\"external_url\":\"https://eru.gg/0xdd70040edad97c0b55287034f0b8e99838614155\",\"coverImg\":{\"item\":\"ipfs://bafybeifxarggpx2dkeqir4yfctzpnxpodo4plgifoycj3ujs7fqbikzrpu\",\"type\":\"image/png\",\"altTag\":\"\"},\"name\":\"Smashing wassei\",\"type\":\"sound\",\"key\":\"G\",\"bpm\":\"\",\"tags\":[],\"animation_url\":null,\"mainContentFocus\":\"AUDIO\",\"contentWarning\":null,\"attributes\":[{\"traitType\":\"type\",\"displayType\":\"string\",\"value\":\"audio\"},{\"traitType\":\"author\",\"displayType\":\"string\",\"value\":\"0xdd70040edad97c0b55287034f0b8e99838614155\"}],\"media\":{\"item\":\"ipfs://bafybeianrbu4fkhk7n7dmmw3jc3d3y7qdtek3jar3aqsins56niscegbbi\",\"type\":\"audio/wav\",\"altTag\":\"\"},\"locale\":\"en-US\",\"createdOn\":\"2022-12-14T21:56:11.221Z\",\"appId\":\"Eru\"}")
+console.log("🚀 ~ file: Explorer.tsx:22 ~ constExplorer:React.FC=observer ~ formattedResponse", formattedResponse)
 
-const [soundList, setSoundList] = useState([])
-
+  const [soundList, setSoundList] = useState([
+    formattedResponse
+  ])
+  
 useEffect(() => {
   ( async () => {
       if (world.entityToIndex.size > 0){
