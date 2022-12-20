@@ -1,7 +1,16 @@
 import Bundlr from '@bundlr-network/client';
 import { APP_NAME, BUNDLR_CURRENCY, BUNDLR_NODE_URL, ERROR_MESSAGE } from '../constants';
+import type { Readable } from 'node:stream';
 
 const bundlrpk = process.env?.VITE_BUNDLR_PRIVATE_KEY as string;
+
+async function buffer(readable: Readable) {
+  const chunks = [];
+  for await (const chunk of readable) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+  }
+  return Buffer.concat(chunks);
+}
 
  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
  // @ts-ignore
@@ -16,7 +25,9 @@ const handler = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Bad request!' });
     }
   
-    const payload = typeof req.body == 'string' ? req.body : JSON.stringify(req.body);
+    const buf = await buffer(req);
+    const rawBody = buf.toString('utf8');
+    console.log("🚀 ~ file: upload.ts:21 ~ handler ~ rawBody", rawBody)
   
     try {
       const bundlr = new Bundlr(BUNDLR_NODE_URL, BUNDLR_CURRENCY, bundlrpk);
@@ -26,7 +37,7 @@ const handler = async (req, res) => {
       ];
   
       const uploader = bundlr.uploader.chunkedUploader;
-      const { data } = await uploader.uploadData(Buffer.from(payload), { tags });
+      const { data } = await uploader.uploadData(Buffer.from(rawBody), { tags });
   
       return res.status(200).json({ success: true, id: data.id });
     } catch (error) {
