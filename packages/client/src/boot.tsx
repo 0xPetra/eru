@@ -48,11 +48,11 @@ async function bootGame() {
       initialBlockNumberString = params.get("initialBlockNumber");
       initialBlockNumber = initialBlockNumberString ? parseInt(initialBlockNumberString) : 0;
     } else {
-      worldAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-      chainIdString = isDev() ? '31337' : '4242';
+      worldAddress = isDev() ? '0x5FbDB2315678afecb367f032d93F642f64180aa3' : '0x0D4C6C6605A729A379216C93e919711a081BEbA2';
+      chainIdString = isDev() ? '31337' : '420';
       // TODO: Switch for Optimism Goerli when deployed
-      jsonRpc = isDev() ? 'http://localhost:8545' : 'https://follower.super-degen-chain.lattice.xyz';
-      wsRpc = isDev() ? 'ws://localhost:8545' : 'wss://follower.super-degen-chain.lattice.xyz';
+      jsonRpc = isDev() ? 'http://localhost:8545' : 'https://opt-goerli.g.alchemy.com/v2/XswyM19Ae__orVE0n07xF7R-x1UdCQKU';
+      wsRpc = isDev() ? 'ws://localhost:8545' : 'wss://opt-goerli.g.alchemy.com/v2/XswyM19Ae__orVE0n07xF7R-x1UdCQKU';
       checkpointUrl = params.get("checkpoint") || undefined;
       devMode = isDev();
       initialBlockNumberString = '';

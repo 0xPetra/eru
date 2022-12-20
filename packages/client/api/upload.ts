@@ -6,6 +6,7 @@ const bundlrpk = process.env?.VITE_BUNDLR_PRIVATE_KEY as string;
  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
  // @ts-ignore
 const handler = async (req, res) => {
+    console.log("🚀 ~ file: upload.ts:9 ~ handler ~ req", req)
     // Only allow POST
     if (req.method !== 'POST') {
       return res.status(405).json({ success: false, message: 'Invalid method!' });
@@ -15,7 +16,7 @@ const handler = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Bad request!' });
     }
   
-    const payload = JSON.stringify(req.body);
+    const payload = typeof req.body == 'string' ? req.body : JSON.stringify(req.body);
   
     try {
       const bundlr = new Bundlr(BUNDLR_NODE_URL, BUNDLR_CURRENCY, bundlrpk);

@@ -15,7 +15,8 @@ const params = {
   Key: uuid()
 };
 
-const endpoint = '/api/token'
+const endpoint = 'https://eru-5owjm5mh5-0xpetra.vercel.app/api/token'
+// const endpoint = '/api/token'
 
 const getTokens = async () => {
   const response = await axios.get(endpoint);
@@ -44,7 +45,7 @@ const getS3Client = async () => {
   } catch (error) {
     // toast
     console.error("You might need to run serverless functions localy")
-    console.error(error)
+    throw new Error(error.message);
   }
 };
 
@@ -72,7 +73,7 @@ const uploadToIPFS = async (data: any): Promise<AttachmentType[]> => {
     return attachments;
   } catch (error) {
     console.error(error);
-    return [];
+    throw new Error(error.message);
   }
 };
 
@@ -93,8 +94,8 @@ export const uploadFileToIPFS = async (file: File): Promise<AttachmentType | nul
       type: file.type || 'image/jpeg',
       altTag: ''
     };
-  } catch {
-    return null;
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 

@@ -6,14 +6,15 @@ import { ERROR_MESSAGE } from '../constants';
  * @param data - Data to upload to arweave
  * @returns arweave transaction id
  */
-const uploadToArweave = async (data: string): Promise<string> => {
+const uploadToArweave = async (values: string): Promise<string> => {
 
-  const endpoint = '/api/upload'
+  const endpoint = 'https://eru-5owjm5mh5-0xpetra.vercel.app/api/upload'
+  // const endpoint = '/api/upload'
 
   try {
     const upload = await axios(endpoint, {
       method: 'POST',
-      data
+      data: values
     });
     console.log("🚀 ~ file: uploadToArweave.ts:18 ~ uploadToArweave ~ upload", upload)
 
