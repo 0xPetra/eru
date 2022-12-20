@@ -15,7 +15,7 @@ async function buffer(readable: Readable) {
  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
  // @ts-ignore
 const handler = async (req, res) => {
-    console.log("🚀 ~ file: upload.ts:9 ~ handler ~ req", req)
+    console.log("🚀 ~ file: upload.ts:9 ~ handler ~ req", req.body)
     // Only allow POST
     if (req.method !== 'POST') {
       return res.status(405).json({ success: false, message: 'Invalid method!' });
@@ -27,7 +27,7 @@ const handler = async (req, res) => {
   
     const buf = await buffer(req);
     const rawBody = buf.toString('utf8');
-    console.log("🚀 ~ file: upload.ts:21 ~ handler ~ rawBody", rawBody)
+    console.log("🚀 ~ rawBody", rawBody)
   
     try {
       const bundlr = new Bundlr(BUNDLR_NODE_URL, BUNDLR_CURRENCY, bundlrpk);
